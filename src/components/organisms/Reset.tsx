@@ -1,8 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { TextInput, Button } from '../atoms';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 
-function ResetForm() {
+function Reset() {
+  const dispatch = useDispatch();
   const [resetEmail, setResetEmail] = useState('');
 
   const inputEmail = useCallback(
@@ -25,7 +28,7 @@ function ResetForm() {
         onChange={inputEmail}
       />
       <Button label="パスワードをリセットする" variant="contained" color="primary" size="large" />
-      <div>ログイン画面に戻る</div>
+      <div onClick={() => dispatch(push('/signin'))}>ログイン画面に戻る</div>
     </Wrapper>
   );
 }
@@ -37,4 +40,4 @@ const Wrapper = styled.div`
   text-align: center;
 `;
 
-export default ResetForm;
+export default Reset;

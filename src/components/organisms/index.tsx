@@ -1,4 +1,4 @@
-export { default as LoginForm } from './LoginForm';
-export { default as RegisterForm } from './RegisterForm';
-export { default as ResetForm } from './ResetForm';
+export { default as SignIn } from './SignIn';
+export { default as SignUp } from './SignUp';
+export { default as Reset } from './Reset';
 export { default as Header } from './Header';

@@ -1,8 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { TextInput, Button } from '../atoms';
 import styled from 'styled-components';
+import { push } from 'connected-react-router';
+import { useDispatch } from 'react-redux';
 
-function LoginForm() {
+function SignIn() {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState(''),
     [password, setPassword] = useState('');
 
@@ -42,8 +45,8 @@ function LoginForm() {
         onChange={inputPassword}
       />
       <Button label="ログイン" variant="contained" color="primary" size="large" />
-      <div>パスワードを忘れた方はこちら</div>
-      <div>アカウント登録がまだですか？</div>
+      <div onClick={() => dispatch(push('/signin/reset'))}>パスワードを忘れた方はこちら</div>
+      <div onClick={() => dispatch(push('/signup'))}>アカウント登録がまだですか？</div>
     </Wrapper>
   );
 }
@@ -55,4 +58,4 @@ const Wrapper = styled.div`
   text-align: center;
 `;
 
-export default LoginForm;
+export default SignIn;

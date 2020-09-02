@@ -1,8 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { TextInput, Button } from '../atoms';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 
-function RegisterForm() {
+function SignUp() {
+  const dispatch = useDispatch();
   const [name, setName] = useState(''),
     [email, setEmail] = useState(''),
     [password, setPassword] = useState(''),
@@ -72,7 +75,7 @@ function RegisterForm() {
         onChange={inputConfirPassword}
       />
       <Button label="アカウントを登録する" variant="contained" color="primary" size="large" />
-      <div>アカウントをお持ちの方はこちら</div>
+      <div onClick={() => dispatch(push('/signin'))}>アカウントをお持ちの方はこちら</div>
     </Wrapper>
   );
 }
@@ -84,4 +87,4 @@ const Wrapper = styled.div`
   text-align: center;
 `;
 
-export default RegisterForm;
+export default SignUp;

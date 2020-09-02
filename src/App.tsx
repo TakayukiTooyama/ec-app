@@ -1,12 +1,15 @@
 import React from 'react';
-import { LoginForm, Header } from './components/organisms';
+import { Header } from './components/organisms';
+import Router from './Router';
 
 function App() {
   return (
-    <div className="App">
+    <>
       <Header />
-      <LoginForm />
-    </div>
+      <main>
+        <Router />
+      </main>
+    </>
   );
 }
 
