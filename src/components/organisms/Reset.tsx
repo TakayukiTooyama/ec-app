@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { TextInput, Button } from '../atoms';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
+import { resetPassword } from '../../reducks/users/operations';
 
 function Reset() {
   const dispatch = useDispatch();
   const [resetEmail, setResetEmail] = useState('');
 
-  const inputEmail = useCallback(
+  const inputResetEmail = useCallback(
     (e) => {
       setResetEmail(e.target.value);
     },
@@ -25,9 +26,15 @@ function Reset() {
         required={true}
         type="email"
         value={resetEmail}
-        onChange={inputEmail}
+        onChange={inputResetEmail}
       />
-      <Button label="パスワードをリセットする" variant="contained" color="primary" size="large" />
+      <Button
+        label="パスワードをリセットする"
+        variant="contained"
+        color="primary"
+        size="large"
+        onClick={() => dispatch(resetPassword(resetEmail))}
+      />
       <div onClick={() => dispatch(push('/signin'))}>ログイン画面に戻る</div>
     </Wrapper>
   );

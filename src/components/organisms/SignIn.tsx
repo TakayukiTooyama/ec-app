@@ -3,6 +3,7 @@ import { TextInput, Button } from '../atoms';
 import styled from 'styled-components';
 import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
+import { signIn, googleAuth } from '../../reducks/users/operations';
 
 function SignIn() {
   const dispatch = useDispatch();
@@ -44,7 +45,19 @@ function SignIn() {
         margin="normal"
         onChange={inputPassword}
       />
-      <Button label="ログイン" variant="contained" color="primary" size="large" />
+      <Button
+        label="ログイン"
+        variant="contained"
+        color="primary"
+        size="large"
+        onClick={() => dispatch(signIn(email, password))}
+      />
+      <Button
+        label="Googleログイン"
+        variant="contained"
+        size="large"
+        onClick={(e: any) => dispatch(googleAuth())}
+      />
       <div onClick={() => dispatch(push('/signin/reset'))}>パスワードを忘れた方はこちら</div>
       <div onClick={() => dispatch(push('/signup'))}>アカウント登録がまだですか？</div>
     </Wrapper>

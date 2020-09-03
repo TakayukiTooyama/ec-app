@@ -3,19 +3,20 @@ import styled from 'styled-components';
 import { TextInput, Button } from '../atoms';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
+import { signUp } from '../../reducks/users/operations';
 
 function SignUp() {
   const dispatch = useDispatch();
-  const [name, setName] = useState(''),
+  const [username, setUsername] = useState(''),
     [email, setEmail] = useState(''),
     [password, setPassword] = useState(''),
     [confirPassword, setConfirPassword] = useState('');
 
-  const inputName = useCallback(
+  const inputUsername = useCallback(
     (e) => {
-      setName(e.target.value);
+      setUsername(e.target.value);
     },
-    [setName]
+    [setUsername]
   );
   const inputEmail = useCallback(
     (e) => {
@@ -44,8 +45,8 @@ function SignUp() {
         multiline={false}
         required={true}
         type="text"
-        value={name}
-        onChange={inputName}
+        value={username}
+        onChange={inputUsername}
       />
       <TextInput
         label="メールアドレス"
@@ -74,7 +75,13 @@ function SignUp() {
         value={confirPassword}
         onChange={inputConfirPassword}
       />
-      <Button label="アカウントを登録する" variant="contained" color="primary" size="large" />
+      <Button
+        label="アカウントを登録する"
+        variant="contained"
+        color="primary"
+        size="large"
+        onClick={() => dispatch(signUp(username, email, password, confirPassword))}
+      />
       <div onClick={() => dispatch(push('/signin'))}>アカウントをお持ちの方はこちら</div>
     </Wrapper>
   );
