@@ -1,9 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { AppBar, Toolbar, IconButton } from '@material-ui/core';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import MenuIcon from '@material-ui/icons/Menu';
-import { useSelector } from 'react-redux';
+
 import { getIsSignedIn } from '../../reducks/users/selectors';
 import { Users } from '../../reducks/users/types';
 

@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
@@ -12,9 +14,7 @@ import {
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import { Image } from '../../reducks/products/types';
-import { useDispatch } from 'react-redux';
 import { deleteProduct } from '../../reducks/products/operations';
-import { push } from 'connected-react-router';
 // import NoImage from '../../assets/img/no_image.png';
 
 const useStyles = makeStyles({

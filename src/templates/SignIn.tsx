@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import { TextInput, Button } from '../components/UIkit';
-import styled from 'styled-components';
-import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
+import styled from 'styled-components';
+
+import { TextInput, Button } from '../components/UIkit';
 import { signIn, googleAuth } from '../reducks/users/operations';
 
 function SignIn() {

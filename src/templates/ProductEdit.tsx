@@ -7,7 +7,7 @@ import { TextInput, Button, SelectBox } from '../components/UIkit';
 import { addProduct } from '../reducks/products/operations';
 import { ImageArea, SizeArea } from '../components/Products';
 
-const ProductEdit = () => {
+function ProductEdit() {
   const dispatch = useDispatch();
 
   let id = window.location.pathname.split('/product/edit')[1];
@@ -138,7 +138,7 @@ const ProductEdit = () => {
       />
     </Wrapper>
   );
-};
+}
 
 const Wrapper = styled.div`
   width: 90%;

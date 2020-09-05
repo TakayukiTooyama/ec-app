@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react';
-import styled from 'styled-components';
-import PreviewImage from './PreviewImage';
 import { IconButton } from '@material-ui/core';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
+import styled from 'styled-components';
+
+import PreviewImage from './PreviewImage';
 import { storage } from '../../firebase';
 
 type Props = {
