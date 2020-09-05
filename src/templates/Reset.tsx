@@ -1,9 +1,10 @@
 import React, { useState, useCallback } from 'react';
-import styled from 'styled-components';
-import { TextInput, Button } from '../atoms';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
-import { resetPassword } from '../../reducks/users/operations';
+import styled from 'styled-components';
+
+import { TextInput, Button } from '../components/UIkit';
+import { resetPassword } from '../reducks/users/operations';
 
 function Reset() {
   const dispatch = useDispatch();

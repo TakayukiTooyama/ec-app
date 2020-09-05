@@ -6,8 +6,10 @@ type Props = {
   fullWidth: boolean;
   multiline: boolean;
   required: boolean;
-  type: string;
-  value: string;
+  rows?: number;
+  type?: string;
+  value: string | number;
+  select?: boolean;
   margin?: 'dense' | 'none' | 'normal';
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -17,8 +19,10 @@ function TextInput({
   fullWidth,
   multiline,
   required,
+  rows,
   type,
   value,
+  select,
   margin,
   onChange,
 }: Props) {
@@ -28,8 +32,10 @@ function TextInput({
       fullWidth={fullWidth}
       multiline={multiline}
       required={required}
+      rows={rows}
       type={type}
       value={value}
+      select={select}
       margin={margin}
       onChange={onChange}
     />

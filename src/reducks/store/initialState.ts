@@ -1,4 +1,7 @@
 export const initialState = {
+  products: {
+    list: [],
+  },
   users: {
     uid: '',
     username: '',

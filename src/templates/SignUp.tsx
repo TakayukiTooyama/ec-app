@@ -1,9 +1,10 @@
 import React, { useState, useCallback } from 'react';
-import styled from 'styled-components';
-import { TextInput, Button } from '../atoms';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
-import { signUp } from '../../reducks/users/operations';
+import styled from 'styled-components';
+
+import { TextInput, Button } from '../components/UIkit';
+import { signUp } from '../reducks/users/operations';
 
 function SignUp() {
   const dispatch = useDispatch();

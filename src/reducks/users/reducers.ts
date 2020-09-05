@@ -1,9 +1,9 @@
 import * as Actions from './actions';
 import { initialState } from '../store/initialState';
 import { User } from './types';
-import { Action } from './types';
+import { UserAction } from './types';
 
-export const UsersReducer = (state: User = initialState.users, action: Action) => {
+export const UsersReducer = (state: User = initialState.users, action: UserAction) => {
   switch (action.type) {
     case Actions.SIGN_IN:
       return {

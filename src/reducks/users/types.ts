@@ -24,7 +24,7 @@ export type User = {
 // };
 
 type TypeAction = 'SIGN_IN' | 'SIGN_UP' | 'SIGN_OUT';
-export type Action = {
+export type UserAction = {
   type: TypeAction;
   payload: User;
 };

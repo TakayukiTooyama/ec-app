@@ -6,7 +6,6 @@ export const listenAuth = () => {
   return async (dispatch: any) => {
     return auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
         const uid = user.uid;
 
         return db

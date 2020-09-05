@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import { TextInput, Button } from '../atoms';
+import { TextInput, Button } from '../components/UIkit';
 import styled from 'styled-components';
 import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
-import { signIn, googleAuth } from '../../reducks/users/operations';
+import { signIn, googleAuth } from '../reducks/users/operations';
 
 function SignIn() {
   const dispatch = useDispatch();
