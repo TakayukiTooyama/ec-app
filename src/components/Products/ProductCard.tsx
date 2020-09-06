@@ -49,7 +49,12 @@ function ProductCard({ id, images, name, price }: Props) {
 
   return (
     <Card className={classes.root}>
-      <CardMedia className={classes.media} image={String(images[0].path)} title="" />
+      <CardMedia
+        className={classes.media}
+        image={String(images[0].path)}
+        title=""
+        onClick={() => dispatch(push(`/product/${id}`))}
+      />
       <CardContent>
         <div>
           <Typography component="p">{name}</Typography>

@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+
 import { Products } from './types';
 
 const productsSelector = (state: Products) => state.products;

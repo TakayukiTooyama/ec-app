@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <Header />
-      <main>
+      <main className="c-main">
         <Router />
       </main>
     </>

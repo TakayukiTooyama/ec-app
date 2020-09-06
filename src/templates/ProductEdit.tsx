@@ -62,7 +62,6 @@ function ProductEdit() {
         .get()
         .then((snapshot) => {
           const data: any = snapshot.data();
-          console.log(data);
           setCategory(data.category);
           setDescription(data.description);
           setGender(data.gender);

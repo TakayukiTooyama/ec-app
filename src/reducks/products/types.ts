@@ -1,3 +1,9 @@
+import { RouterState } from 'connected-react-router';
+
+export type ConnectRouter = {
+  router: RouterState;
+};
+
 export type Products = {
   products: {
     list: Product[];

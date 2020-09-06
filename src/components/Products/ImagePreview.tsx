@@ -7,7 +7,7 @@ type Props = {
   deleteImage: (id: string) => void;
 };
 
-const PreviewImage = ({ id, path, deleteImage }: Props) => {
+const ImagePreview = ({ id, path, deleteImage }: Props) => {
   return (
     <div>
       <StyledImage alt="プレビュー画像" src={String(path)} onClick={() => deleteImage(id)} />
@@ -20,4 +20,4 @@ const StyledImage = styled.img`
   height: 300px;
 `;
 
-export default PreviewImage;
+export default ImagePreview;
