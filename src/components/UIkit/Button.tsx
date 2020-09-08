@@ -1,32 +1,36 @@
 import React, { ReactNode } from 'react';
-import { Button } from '@material-ui/core';
-import styled from 'styled-components';
+import { Button, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  button: {
+    backgroundColor: '#4dd0e1',
+    color: '000',
+    fontSize: 16,
+    height: 48,
+    marginButton: 16,
+    width: 256,
+  },
+});
 
 type Props = {
   label: string;
   variant?: 'text' | 'outlined' | 'contained' | undefined;
-  color?: 'default' | 'inherit' | 'primary' | 'secondary' | undefined;
-  size?: 'small' | 'medium' | 'large' | undefined;
   startIcon?: ReactNode;
-  onClick?: any;
+  onClick: any;
 };
 
-function DefaultButton({ label, variant, color, size, startIcon, onClick }: Props) {
+function DefaultButton({ label, variant, startIcon, onClick }: Props) {
+  const classes = useStyles();
   return (
-    <StyledButton
+    <Button
+      className={classes.button}
       variant={variant}
-      color={color}
-      size={size}
       startIcon={startIcon}
-      onClick={onClick}
+      onClick={() => onClick()}
     >
       {label}
-    </StyledButton>
+    </Button>
   );
 }
-
-const StyledButton = styled(Button)`
-  width: 240px;
-`;
 
 export default DefaultButton;

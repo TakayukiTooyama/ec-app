@@ -6,12 +6,16 @@ service cloud.firestore {
       allow create;
       allow update: if isUserAuth(userId);
       allow delete: if isUserAuth(userId);
+
+      match /cart/{cartId} {
+        allow read, write: if isUserAuth(userId);
+      }
     }
 
     match /products/{productId} {
-      allow read: if isAnyAuth();
-      allow write: if isAnyAuth();
+      allow read, write: if isAnyAuth();
     }
+
 
     function isAnyAuth() {
       return request.auth.uid != null;

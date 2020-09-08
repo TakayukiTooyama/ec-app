@@ -7,6 +7,6 @@ export const initialState = {
     username: '',
     role: '',
     isSignedIn: false,
-    // cart: [],
+    cart: [],
   },
 };

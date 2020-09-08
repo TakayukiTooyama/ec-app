@@ -15,6 +15,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import { TextInput } from '../UIkit';
+import { Size } from '../../reducks/products/types';
 
 const useStyles = makeStyles({
   checkIcon: {
@@ -27,25 +28,15 @@ const useStyles = makeStyles({
 });
 
 type Props = {
-  sizes: {
-    size: string;
-    quantity: string;
-  }[];
-  setSizes: React.Dispatch<
-    React.SetStateAction<
-      {
-        size: string;
-        quantity: string;
-      }[]
-    >
-  >;
+  sizes: Size[];
+  setSizes: React.Dispatch<React.SetStateAction<Size[]>>;
 };
 
 function SizeArea({ sizes, setSizes }: Props) {
   const classes = useStyles();
   const [index, setIndex] = useState(0),
     [size, setSize] = useState(''),
-    [quantity, setQuantity] = useState('');
+    [quantity, setQuantity] = useState(0);
 
   const inputSize = useCallback(
     (e) => {
@@ -60,8 +51,8 @@ function SizeArea({ sizes, setSizes }: Props) {
     [setQuantity]
   );
 
-  const addSize = (addIndex: number, size: string, quantity: string) => {
-    if (size === '' || quantity === '') {
+  const addSize = (addIndex: number, size: string, quantity: number) => {
+    if (size === '') {
       return false;
     } else {
       //ここがいまいち理解できていない
@@ -70,19 +61,19 @@ function SizeArea({ sizes, setSizes }: Props) {
         setSizes((prev) => [...prev, newSizes]);
         setIndex(addIndex + 1);
         setSize('');
-        setQuantity('');
+        setQuantity(0);
       } else {
         const newSizes = sizes;
         newSizes[addIndex] = { size: size, quantity: quantity };
         setSizes(newSizes);
         setIndex(newSizes.length);
         setSize('');
-        setQuantity('');
+        setQuantity(0);
       }
     }
   };
 
-  const editSize = (editIndex: number, size: string, quantity: string) => {
+  const editSize = (editIndex: number, size: string, quantity: number) => {
     setIndex(editIndex);
     setSize(size);
     setQuantity(quantity);
@@ -134,7 +125,6 @@ function SizeArea({ sizes, setSizes }: Props) {
             rows={1}
             type="text"
             value={size}
-            margin="normal"
             onChange={inputSize}
           />
           <TextInput
@@ -145,7 +135,6 @@ function SizeArea({ sizes, setSizes }: Props) {
             rows={1}
             type="number"
             value={quantity}
-            margin="normal"
             onChange={inputQuantity}
           />
         </div>

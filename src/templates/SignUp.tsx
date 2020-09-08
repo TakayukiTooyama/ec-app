@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
-import styled from 'styled-components';
 
 import { TextInput, Button } from '../components/UIkit';
 import { signUp } from '../reducks/users/operations';
@@ -39,7 +38,9 @@ function SignUp() {
   );
 
   return (
-    <Wrapper>
+    <div className="c-section-container">
+      <h2 className="u-text__headline u-text-center">アカウント登録</h2>
+      <div className="module-spacer--medium"></div>
       <TextInput
         label="ユーザー名"
         fullWidth={true}
@@ -76,23 +77,17 @@ function SignUp() {
         value={confirPassword}
         onChange={inputConfirPassword}
       />
-      <Button
-        label="アカウントを登録する"
-        variant="contained"
-        color="primary"
-        size="large"
-        onClick={() => dispatch(signUp(username, email, password, confirPassword))}
-      />
-      <div onClick={() => dispatch(push('/signin'))}>アカウントをお持ちの方はこちら</div>
-    </Wrapper>
+      <div className="module-spacer--medium"></div>
+      <div className="center">
+        <Button
+          label="アカウントを登録する"
+          onClick={() => dispatch(signUp(username, email, password, confirPassword))}
+        />
+        <div className="module-spacer--extra-extra-small"></div>
+        <div onClick={() => dispatch(push('/signin'))}>アカウントをお持ちの方はこちら</div>
+      </div>
+    </div>
   );
 }
-
-const Wrapper = styled.div`
-  width: 90%;
-  max-width: 400px;
-  margin: 5rem auto 0;
-  text-align: center;
-`;
 
 export default SignUp;

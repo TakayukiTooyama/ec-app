@@ -1,6 +1,12 @@
-import { User } from './types';
+import { User, Cart } from './types';
 
-export const SIGN_IN = 'SIGN_IN';
+export const fetchProductInCartAction = (carts: Cart[]) => {
+  return {
+    type: 'FETCH_PRODUCT_IN_CART',
+    payload: carts,
+  };
+};
+
 export const signInAction = (userState: User) => {
   return {
     type: 'SIGN_IN',
@@ -13,7 +19,6 @@ export const signInAction = (userState: User) => {
   };
 };
 
-export const SIGN_UP = 'SIGN_UP';
 export const signUpAction = (userState: User) => {
   return {
     type: 'SIGN_UP',
@@ -26,7 +31,6 @@ export const signUpAction = (userState: User) => {
   };
 };
 
-export const SIGN_OUT = 'SIGN_OUT';
 export const signOutAction = () => {
   return {
     type: 'SIGN_OUT',

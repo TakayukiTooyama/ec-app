@@ -1,9 +1,15 @@
 import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import styled from 'styled-components';
+import { FormControl, InputLabel, Select, MenuItem, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  formControl: {
+    marginBottom: 16,
+    minWidth: 128,
+    width: '100%',
+  },
+});
 
 type Props = {
-  margin?: 'none' | 'dense' | 'normal' | undefined;
   options: {
     id: string;
     name: string;
@@ -14,9 +20,10 @@ type Props = {
   select: any;
 };
 
-function SelectBox({ margin, options, label, required, value, select }: Props) {
+function SelectBox({ options, label, required, value, select }: Props) {
+  const classes = useStyles();
   return (
-    <StyledFormControl margin={margin}>
+    <FormControl className={classes.formControl}>
       <InputLabel>{label}</InputLabel>
       <Select required={required} value={value} onChange={(e) => select(e.target.value)}>
         {options.map((option) => (
@@ -25,12 +32,8 @@ function SelectBox({ margin, options, label, required, value, select }: Props) {
           </MenuItem>
         ))}
       </Select>
-    </StyledFormControl>
+    </FormControl>
   );
 }
-
-const StyledFormControl = styled(FormControl)`
-  width: 100%;
-`;
 
 export default SelectBox;

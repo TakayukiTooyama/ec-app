@@ -1,9 +1,27 @@
 import { auth, FirebaseTimestamp, db, fb } from '../../firebase';
 import { push } from 'connected-react-router';
-import { signInAction, signOutAction } from './actions';
+import { signInAction, signOutAction, fetchProductInCartAction } from './actions';
+import { Cart, User, MyThunkDispatch, MyTunkResult } from './types';
+
+export const addProductToCart = (addProduct: Cart): MyTunkResult<Promise<void>> => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const cartRef = db.collection('users').doc(uid).collection('cart').doc();
+    addProduct['cartId'] = cartRef.id;
+    cartRef.set(addProduct).then(() => {
+      dispatch(push('/'));
+    });
+  };
+};
+
+export const fetchProductInCart = (productInCart: Cart[]) => {
+  return async (dispatch: MyThunkDispatch) => {
+    dispatch(fetchProductInCartAction(productInCart));
+  };
+};
 
 export const listenAuth = () => {
-  return async (dispatch: any) => {
+  return async (dispatch: MyThunkDispatch) => {
     return auth.onAuthStateChanged((user) => {
       if (user) {
         const uid = user.uid;
@@ -13,7 +31,7 @@ export const listenAuth = () => {
           .doc(uid)
           .get()
           .then((snapshot) => {
-            const data: any = snapshot.data();
+            const data = snapshot.data() as User;
 
             dispatch(
               signInAction({
@@ -21,6 +39,7 @@ export const listenAuth = () => {
                 username: data.username,
                 role: data.role,
                 isSignedIn: true,
+                cart: data.cart,
               })
             );
           });
@@ -37,7 +56,7 @@ export const signUp = (
   password: string,
   confirPassword: string
 ) => {
-  return async (dispatch: any) => {
+  return async (dispatch: MyThunkDispatch) => {
     if (username === '' || email === '' || password === '' || confirPassword === '') {
       alert('必須項目が未入力です');
       return false;
@@ -78,7 +97,7 @@ export const signUp = (
 };
 
 export const signIn = (email: string, password: string) => {
-  return async (dispatch: any) => {
+  return async (dispatch: MyThunkDispatch) => {
     if (email === '' || password === '') {
       alert('メールアドレスかパスワードが未入力です。');
       return false;
@@ -95,7 +114,7 @@ export const signIn = (email: string, password: string) => {
           .doc(uid)
           .get()
           .then((snapshot) => {
-            const data: any = snapshot.data();
+            const data = snapshot.data() as User;
 
             dispatch(
               signInAction({
@@ -103,6 +122,7 @@ export const signIn = (email: string, password: string) => {
                 username: data.username,
                 role: data.role,
                 isSignedIn: true,
+                cart: data.cart,
               })
             );
             dispatch(push('/'));

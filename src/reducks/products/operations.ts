@@ -2,19 +2,19 @@ import { push } from 'connected-react-router';
 
 import { FirebaseTimestamp, db } from '../../firebase';
 import { fetchProductAction, deleteProductAction } from './actions';
-import { Data, Image, Size, Product } from './types';
+import { ProductData, Image, Size, MyThunkDispatch, MyTunkResult } from './types';
 
 const productsRef = db.collection('products');
 
 export const fetchProduct = () => {
-  return async (dispatch: any) => {
+  return async (dispatch: MyThunkDispatch) => {
     productsRef
       .orderBy('created_at', 'desc')
       .get()
       .then((snapshots) => {
-        const productList: Data[] = [];
+        const productList: ProductData[] = [];
         snapshots.forEach((snapshot) => {
-          const data = snapshot.data();
+          const data = snapshot.data() as ProductData;
           productList.push(data);
         });
         dispatch(fetchProductAction(productList));
@@ -22,52 +22,53 @@ export const fetchProduct = () => {
   };
 };
 
-export const deleteProduct = (id: string) => {
-  return async (dispatch: any, getState: any) => {
+export const deleteProduct = (id: string): MyTunkResult<Promise<void>> => {
+  return async (dispatch, getState) => {
     productsRef
       .doc(id)
       .delete()
       .then(() => {
-        const prevProducts: Product[] = getState().products.list;
-        const nextProducts = prevProducts.filter((product: Product) => product.id !== id);
+        const prevProducts: ProductData[] = getState().products.list;
+        const nextProducts = prevProducts.filter((product: ProductData) => product.id !== id);
         dispatch(deleteProductAction(nextProducts));
       });
   };
 };
 
-export const addProduct = (
+export const saveProduct = (
   id: string,
   name: string,
   description: string,
   category: string,
   gender: string,
-  price: string,
+  price: number,
   iamges: Image[],
   sizes: Size[]
 ) => {
-  return async (dispatch: any) => {
-    if (name === '' || description === '' || category === '' || gender === '' || price === '') {
-      alert('必須項目が未記入です。');
+  return async (dispatch: MyThunkDispatch) => {
+    if (name === '' || description === '' || category === '' || gender === '' || price === 0) {
+      alert('必須項目が未記入または価格が0円です。');
       return false;
     }
     const timestamp = FirebaseTimestamp.now();
 
-    const data: Data = {
+    const data: ProductData = {
+      id: id,
       name: name,
       description: description,
       category: category,
       gender: gender,
-      price: parseInt(price, 10),
-      updated_at: timestamp,
+      price: parseInt(String(price), 10),
       images: iamges,
       sizes: sizes,
+      updated_at: timestamp,
     };
 
     if (id === '') {
       const ref = productsRef.doc();
-      data.created_at = timestamp;
       id = ref.id;
       data.id = id;
+      data.created_at = timestamp;
     }
 
     return db

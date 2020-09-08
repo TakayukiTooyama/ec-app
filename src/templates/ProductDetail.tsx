@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core';
-import { db } from '../firebase';
-import { useSelector } from 'react-redux';
+import { db, FirebaseTimestamp } from '../firebase';
+import { useSelector, useDispatch } from 'react-redux';
 import { ConnectRouter } from '../reducks/products/types';
 import HTMLReactParser from 'html-react-parser';
 import ImageSwiper from '../components/Products/ImageSwiper';
 import { SizeTable } from '../components/Products';
+import { addProductToCart } from '../reducks/users/operations';
+import { ProductData } from '../reducks/products/types';
 
 const useStyles = makeStyles((theme) => ({
   sliderBox: {
@@ -35,9 +37,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProductDetail = () => {
+function ProductDetail() {
   const classes = useStyles();
-  const [product, setProduct] = useState<firebase.firestore.DocumentData | undefined | null>(null);
+  const dispatch = useDispatch();
+  const [product, setProduct] = useState<ProductData | null>(null);
   const selector = useSelector((state: ConnectRouter) => state);
   const path = selector.router.location.pathname;
   const id = path.split('/product/')[1];
@@ -47,7 +50,7 @@ const ProductDetail = () => {
       .doc(id)
       .get()
       .then((res) => {
-        const data = res.data();
+        const data = res.data() as ProductData;
         setProduct(data);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,6 +65,29 @@ const ProductDetail = () => {
     }
   };
 
+  const addProduct = useCallback(
+    (selectSize: string) => {
+      const timestamp = FirebaseTimestamp.now();
+      if (product === null) {
+        return false;
+      }
+      dispatch(
+        addProductToCart({
+          added_at: timestamp,
+          productId: product.id,
+          price: product.price,
+          description: product.description,
+          gender: product.gender,
+          name: product.name,
+          images: product.images,
+          quantity: 1,
+          size: selectSize,
+        })
+      );
+    },
+    [product, dispatch]
+  );
+
   return (
     <section className="c-section-wrapin">
       {product && (
@@ -72,15 +98,14 @@ const ProductDetail = () => {
           <div className={classes.detail}>
             <h2 className="u-text__headline">{product.name}</h2>
             <p>￥{product.price.toLocaleString()}</p>
-            {/* <TabelSize/> */}
             <p>{returnCodeToBr(product.description)}</p>
             <div className="module-spacer--small"></div>
-            <SizeTable sizes={product.sizes} />
+            <SizeTable addProduct={addProduct} sizes={product.sizes} />
           </div>
         </div>
       )}
     </section>
   );
-};
+}
 
 export default ProductDetail;

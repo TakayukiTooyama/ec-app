@@ -11,4 +11,4 @@ export const getRole = createSelector([usersSelector], (state) => state.role);
 
 export const getIsSignedIn = createSelector([usersSelector], (state) => state.isSignedIn);
 
-// export const getCart = createSelector([usersSelector], (state) => state.cart);
+export const getCart = createSelector([usersSelector], (state) => state.cart);

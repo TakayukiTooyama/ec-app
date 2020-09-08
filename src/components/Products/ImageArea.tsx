@@ -1,27 +1,25 @@
 import React, { useCallback } from 'react';
-import { IconButton } from '@material-ui/core';
+import { IconButton, makeStyles } from '@material-ui/core';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
-import styled from 'styled-components';
 
 import PreviewImage from './ImagePreview';
 import { storage } from '../../firebase';
+import { Image } from '../../reducks/products/types';
+
+const useStyles = makeStyles({
+  icon: {
+    height: 48,
+    width: 48,
+  },
+});
 
 type Props = {
-  images: {
-    id: string;
-    path: firebase.storage.UploadTaskSnapshot;
-  }[];
-  setImages: React.Dispatch<
-    React.SetStateAction<
-      {
-        id: string;
-        path: firebase.storage.UploadTaskSnapshot;
-      }[]
-    >
-  >;
+  images: Image[];
+  setImages: React.Dispatch<React.SetStateAction<Image[]>>;
 };
 
 function ImageArea({ images, setImages }: Props) {
+  const classes = useStyles();
   const uploadImage = useCallback(
     (e) => {
       const file = e.target.files;
@@ -43,7 +41,7 @@ function ImageArea({ images, setImages }: Props) {
       const uploadTask = uploadRef.put(blob);
 
       uploadTask.then(() => {
-        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL: string) => {
           const newImage = { id: fileName, path: downloadURL };
           setImages((prev) => [...prev, newImage]);
         });
@@ -67,40 +65,34 @@ function ImageArea({ images, setImages }: Props) {
   );
 
   return (
-    <Wrapper>
-      {images.length > 0 &&
-        images.map((image) => (
-          <PreviewImage key={image.id} id={image.id} path={image.path} deleteImage={deleteImage} />
-        ))}
-      <ImageUpArea>
+    <div>
+      <div className="p-grid__list-images">
+        {images.length > 0 &&
+          images.map((image) => (
+            <PreviewImage
+              key={image.id}
+              id={image.id}
+              path={image.path}
+              deleteImage={deleteImage}
+            />
+          ))}
+      </div>
+      <div className="u-text-right">
         <span>商品画像を登録する</span>
-        <StyledIconButton>
+        <IconButton className={classes.icon}>
           <label>
             <AddPhotoAlternateIcon />
-            <StyledInput id="image" type="file" onChange={(e) => uploadImage(e)} />
+            <input
+              className="u-display-none"
+              id="image"
+              type="file"
+              onChange={(e) => uploadImage(e)}
+            />
           </label>
-        </StyledIconButton>
-      </ImageUpArea>
-    </Wrapper>
+        </IconButton>
+      </div>
+    </div>
   );
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-flow: wrap;
-`;
-
-const ImageUpArea = styled.div`
-  text-align: right;
-`;
-
-const StyledIconButton = styled(IconButton)`
-  width: 48px;
-  height: 48px;
-`;
-
-const StyledInput = styled.input`
-  display: none;
-`;
 
 export default ImageArea;

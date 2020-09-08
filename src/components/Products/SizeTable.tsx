@@ -23,9 +23,10 @@ const useStyles = makeStyles({
 
 type Props = {
   sizes: Size[];
+  addProduct: any;
 };
 
-function SizeTable({ sizes }: Props) {
+function SizeTable({ sizes, addProduct }: Props) {
   const classes = useStyles();
   return (
     <TableContainer>
@@ -40,7 +41,7 @@ function SizeTable({ sizes }: Props) {
                 <TableCell>残り{size.quantity}点</TableCell>
                 <TableCell className={classes.iconCell}>
                   {Number(size.quantity) > 0 ? (
-                    <IconButton>
+                    <IconButton onClick={() => addProduct(size.size)}>
                       <ShoppingCartIcon />
                     </IconButton>
                   ) : (

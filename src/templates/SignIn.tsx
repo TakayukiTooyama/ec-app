@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
-import styled from 'styled-components';
 
 import { TextInput, Button } from '../components/UIkit';
 import { signIn, googleAuth } from '../reducks/users/operations';
@@ -25,8 +24,9 @@ function SignIn() {
   );
 
   return (
-    <Wrapper>
-      <h2>ログイン</h2>
+    <div className="c-section-container">
+      <h2 className="u-text__headline u-text-center">ログイン</h2>
+      <div className="module-spacer--medium"></div>
       <TextInput
         label="メールアドレス"
         fullWidth={true}
@@ -43,33 +43,27 @@ function SignIn() {
         required={true}
         type="password"
         value={password}
-        margin="normal"
         onChange={inputPassword}
       />
-      <Button
-        label="ログイン"
-        variant="contained"
-        color="primary"
-        size="large"
-        onClick={() => dispatch(signIn(email, password))}
-      />
-      <Button
-        label="Googleログイン"
-        variant="contained"
-        size="large"
-        onClick={(e: any) => dispatch(googleAuth())}
-      />
-      <div onClick={() => dispatch(push('/signin/reset'))}>パスワードを忘れた方はこちら</div>
-      <div onClick={() => dispatch(push('/signup'))}>アカウント登録がまだですか？</div>
-    </Wrapper>
+      <div className="module-spacer--medium"></div>
+      <div className="center">
+        <Button
+          label="ログイン"
+          variant="contained"
+          onClick={() => dispatch(signIn(email, password))}
+        />
+        <div className="module-spacer--extra-extra-small"></div>
+        <Button
+          label="Googleログイン"
+          variant="contained"
+          onClick={(e: any) => dispatch(googleAuth())}
+        />
+        <div className="module-spacer--extra-extra-small"></div>
+        <p onClick={() => dispatch(push('/signin/reset'))}>パスワードを忘れた方はこちら</p>
+        <p onClick={() => dispatch(push('/signup'))}>アカウント登録がまだですか？</p>
+      </div>
+    </div>
   );
 }
-
-const Wrapper = styled.div`
-  width: 90%;
-  max-width: 400px;
-  margin: 5rem auto 0;
-  text-align: center;
-`;
 
 export default SignIn;

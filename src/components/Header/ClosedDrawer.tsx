@@ -78,56 +78,62 @@ function ClosedDrawer({ open, onClose }: Props) {
       label: '注文履歴',
       icon: <HistoryIcon />,
       id: 'history',
-      value: '/product/hitory',
+      value: '/product/history',
     },
     {
       func: selectMenu,
       label: 'プロフィール',
       icon: <PersonIcon />,
       id: 'profile',
-      value: '/profile/mypage',
+      value: '/user/mypage',
     },
   ];
 
   return (
-    <Drawer
-      anchor="right"
-      open={open}
-      classes={{ paper: classes.drawerPaper }}
-      ModalProps={{ keepMounted: true }}
-      onClose={(e) => onClose(e)}
-    >
-      <div className={classes.searchField}>
-        <TextInput
-          label="キーワードを入力"
-          fullWidth={true}
-          multiline={false}
-          required={false}
-          type="text"
-          value={keyword}
-          onChange={handleKeyword}
-        />
-        <IconButton>
-          <SearchIcon onClick={() => setKeyword('')} />
-        </IconButton>
-      </div>
-      <Divider />
-      <List>
-        {menus.map((menu: Menu) => (
-          <ListItem button key={menu.id} onClick={(e) => menu.func(e, menu.value)}>
-            <ListItemIcon>{menu.icon}</ListItemIcon>
-            <ListItemText>{menu.label}</ListItemText>
-          </ListItem>
-        ))}
-        <ListItem button key="logout" onClick={() => dispatch(signOut())}>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText>ログアウト</ListItemText>
-        </ListItem>
-        <Divider />
-      </List>
-    </Drawer>
+    <div className={classes.drawer}>
+      <Drawer
+        anchor="right"
+        open={open}
+        onClose={(e) => onClose(e)}
+        onKeyDown={(e) => onClose(e)}
+        classes={{ paper: classes.drawerPaper }}
+        ModalProps={{ keepMounted: true }}
+      >
+        <div onKeyDown={(e) => onClose(e)}>
+          <div className={classes.searchField}>
+            <TextInput
+              label="キーワードを入力"
+              fullWidth={true}
+              multiline={false}
+              required={false}
+              type="text"
+              rows={1}
+              value={keyword}
+              onChange={handleKeyword}
+            />
+            <IconButton>
+              <SearchIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            {menus.map((menu: Menu) => (
+              <ListItem button key={menu.id} onClick={(e) => menu.func(e, menu.value)}>
+                <ListItemIcon>{menu.icon}</ListItemIcon>
+                <ListItemText primary={menu.label} />
+              </ListItem>
+            ))}
+            <ListItem button key="logout" onClick={() => dispatch(signOut())}>
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary="ログアウト" />
+            </ListItem>
+            <Divider />
+          </List>
+        </div>
+      </Drawer>
+    </div>
   );
 }
 

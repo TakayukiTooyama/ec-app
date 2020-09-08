@@ -1,23 +1,13 @@
-import { Data } from './types';
+import { ProductData } from './types';
 
-export const ADD_PRODUCT = 'ADD_PRODUCT';
-export const addProductAction = () => {
-  return {
-    type: 'ADD_PRODUCT',
-    payload: {},
-  };
-};
-
-export const FETCH_PRODUCT = 'FETCH_PRODUCT';
-export const fetchProductAction = (product: Data[]) => {
+export const fetchProductAction = (product: ProductData[]) => {
   return {
     type: 'FETCH_PRODUCT',
     payload: product,
   };
 };
 
-export const DELETE_PRODUCT = 'DELETE_PRODUCT';
-export const deleteProductAction = (product: Data[]) => {
+export const deleteProductAction = (product: ProductData[]) => {
   return {
     type: 'DELETE_PRODUCT',
     payload: product,

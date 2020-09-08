@@ -10,7 +10,6 @@ type Props = {
   type?: string;
   value: string | number;
   select?: boolean;
-  margin?: 'dense' | 'none' | 'normal';
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -23,7 +22,6 @@ function TextInput({
   type,
   value,
   select,
-  margin,
   onChange,
 }: Props) {
   return (
@@ -36,7 +34,6 @@ function TextInput({
       type={type}
       value={value}
       select={select}
-      margin={margin}
       onChange={onChange}
     />
   );

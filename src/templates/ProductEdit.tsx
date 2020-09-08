@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
 
 import { db } from '../firebase';
 import { TextInput, Button, SelectBox } from '../components/UIkit';
-import { addProduct } from '../reducks/products/operations';
+import { saveProduct } from '../reducks/products/operations';
 import { ImageArea, SizeArea } from '../components/Products';
+import { Size, Image, Product } from '../reducks/products/types';
 
 function ProductEdit() {
   const dispatch = useDispatch();
@@ -20,9 +20,9 @@ function ProductEdit() {
     [description, setDescription] = useState(''),
     [category, setCategory] = useState(''),
     [gender, setGender] = useState(''),
-    [price, setPrice] = useState(''),
-    [images, setImages] = useState<{ id: string; path: firebase.storage.UploadTaskSnapshot }[]>([]),
-    [sizes, setSizes] = useState<{ size: string; quantity: string }[]>([]);
+    [price, setPrice] = useState(0),
+    [images, setImages] = useState<Image[]>([]),
+    [sizes, setSizes] = useState<Size[]>([]);
 
   const inputName = useCallback(
     (e) => {
@@ -61,7 +61,7 @@ function ProductEdit() {
         .doc(id)
         .get()
         .then((snapshot) => {
-          const data: any = snapshot.data();
+          const data = snapshot.data() as Product;
           setCategory(data.category);
           setDescription(data.description);
           setGender(data.gender);
@@ -74,8 +74,8 @@ function ProductEdit() {
   }, [id]);
 
   return (
-    <Wrapper>
-      <h2>商品の登録・編集</h2>
+    <section className="c-section-container">
+      <h2 className="u-text__headline u-text-center">商品の登録・編集</h2>
       <ImageArea images={images} setImages={setImages} />
       <TextInput
         label="商品名"
@@ -84,7 +84,6 @@ function ProductEdit() {
         required={true}
         type="text"
         value={name}
-        margin="normal"
         onChange={inputName}
       />
       <TextInput
@@ -95,7 +94,6 @@ function ProductEdit() {
         type="text"
         rows={3}
         value={description}
-        margin="normal"
         onChange={inputDescription}
       />
       <SelectBox
@@ -103,17 +101,9 @@ function ProductEdit() {
         options={categories}
         required={true}
         value={category}
-        margin="normal"
         select={setCategory}
       />
-      <SelectBox
-        label="性別"
-        options={genders}
-        required={true}
-        value={gender}
-        margin="normal"
-        select={setGender}
-      />
+      <SelectBox label="性別" options={genders} required={true} value={gender} select={setGender} />
 
       <TextInput
         label="価格"
@@ -122,28 +112,22 @@ function ProductEdit() {
         required={true}
         type="number"
         value={price}
-        margin="normal"
         onChange={inputPrice}
       />
+      <div className="module-spacer--small"></div>
       <SizeArea sizes={sizes} setSizes={setSizes} />
-      <Button
-        label="登録する"
-        variant="contained"
-        color="primary"
-        size="large"
-        onClick={() =>
-          dispatch(addProduct(id, name, description, category, gender, price, images, sizes))
-        }
-      />
-    </Wrapper>
+      <div className="module-spacer--small"></div>
+      <div className="center">
+        <Button
+          label="登録する"
+          variant="contained"
+          onClick={() =>
+            dispatch(saveProduct(id, name, description, category, gender, price, images, sizes))
+          }
+        />
+      </div>
+    </section>
   );
 }
-
-const Wrapper = styled.div`
-  width: 90%;
-  max-width: 400px;
-  margin: 5rem auto 0;
-  text-align: center;
-`;
 
 export default ProductEdit;
