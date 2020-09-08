@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { IconButton, Badge } from '@material-ui/core';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import MenuIcon from '@material-ui/icons/Menu';
-import { useSelector, useDispatch } from 'react-redux';
-import { Users, Cart } from '../../reducks/users/types';
-import { getCart, getUid } from '../../reducks/users/selectors';
+import { push } from 'connected-react-router';
+
 import { db } from '../../firebase';
 import { fetchProductInCart } from '../../reducks/users/operations';
+import { getCart, getUid } from '../../reducks/users/selectors';
+import { Users, Cart } from '../../reducks/users/types';
 
 type Props = {
   handleDrawerToggle: (e: any) => false | undefined;
@@ -35,7 +37,7 @@ function HeaderMenu({ handleDrawerToggle }: Props) {
               break;
             case 'modified':
               const index = productInCart.findIndex(
-                (product: Cart) => product.productId === change.doc.id
+                (product: Cart) => product.cartId === change.doc.id
               );
               productInCart[index] = product;
               break;
@@ -44,6 +46,8 @@ function HeaderMenu({ handleDrawerToggle }: Props) {
               productInCart = productInCart.filter(
                 (product: Cart) => product.cartId !== change.doc.id
               );
+              break;
+            default:
               break;
           }
         });
@@ -55,7 +59,7 @@ function HeaderMenu({ handleDrawerToggle }: Props) {
 
   return (
     <>
-      <IconButton>
+      <IconButton onClick={() => dispatch(push('/cart'))}>
         <Badge badgeContent={productInCart.length} color="secondary">
           <ShoppingCartIcon />
         </Badge>
