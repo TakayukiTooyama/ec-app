@@ -1,5 +1,13 @@
 import { initialState } from '../store/initialState';
-import { User, UserActionType, FETCH_PRODUCT_IN_CART, SIGN_IN, SIGN_OUT, SIGN_UP } from './types';
+import {
+  User,
+  UserActionType,
+  FETCH_PRODUCT_IN_CART,
+  SIGN_IN,
+  SIGN_OUT,
+  SIGN_UP,
+  FETCH_ORDERS_HISTORY,
+} from './types';
 
 export const UsersReducer = (state: User = initialState.users, action: UserActionType) => {
   switch (action.type) {
@@ -7,6 +15,11 @@ export const UsersReducer = (state: User = initialState.users, action: UserActio
       return {
         ...state,
         cart: [...action.payload],
+      };
+    case FETCH_ORDERS_HISTORY:
+      return {
+        ...state,
+        orders: [...action.payload],
       };
     case SIGN_IN:
       return {

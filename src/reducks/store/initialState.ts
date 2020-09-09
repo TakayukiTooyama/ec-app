@@ -8,5 +8,6 @@ export const initialState = {
     role: '',
     isSignedIn: false,
     cart: [],
+    orders: [],
   },
 };

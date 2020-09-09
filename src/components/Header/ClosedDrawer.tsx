@@ -78,7 +78,7 @@ function ClosedDrawer({ open, onClose }: Props) {
       label: '注文履歴',
       icon: <HistoryIcon />,
       id: 'history',
-      value: '/product/history',
+      value: '/order/history',
     },
     {
       func: selectMenu,

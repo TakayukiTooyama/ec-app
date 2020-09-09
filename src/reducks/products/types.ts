@@ -2,6 +2,7 @@ import { RouterState } from 'connected-react-router';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { firestore } from 'firebase';
+import { Users } from '../users/types';
 
 export type ConnectRouter = {
   router: RouterState;
@@ -28,11 +29,6 @@ export type Product = {
   sizes: Size[];
 };
 
-// type NewProductData = {
-//   id: string;
-//   created_at: firestore.Timestamp;
-// };
-
 export type ProductData = {
   id: string;
   name: string;
@@ -45,8 +41,6 @@ export type ProductData = {
   created_at?: firestore.Timestamp;
   updated_at: firestore.Timestamp;
 };
-
-// export type ProductData = NewProductData & ExitProductData;
 
 export type Image = {
   id: string;
@@ -79,7 +73,7 @@ export type ProductActionType = FetchProductAction | DeleteProductAction;
 //=================
 // operations type
 //=================
-type MyRootState = Products;
 type MyExtraArg = undefined;
-export type MyTunkResult<T> = ThunkAction<T, MyRootState, MyExtraArg, Action>;
-export type MyThunkDispatch = ThunkDispatch<MyRootState, MyExtraArg, Action>;
+export type MyTunkProductsResult<T> = ThunkAction<T, Products, MyExtraArg, Action>;
+export type MyTunkUsersResult<T> = ThunkAction<T, Users, MyExtraArg, Action>;
+export type MyThunkDispatch = ThunkDispatch<Products, MyExtraArg, Action>;

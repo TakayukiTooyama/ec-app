@@ -14,17 +14,16 @@ const useStyles = makeStyles({
 
 type Props = {
   label: string;
-  variant?: 'text' | 'outlined' | 'contained' | undefined;
   startIcon?: ReactNode;
   onClick: any;
 };
 
-function DefaultButton({ label, variant, startIcon, onClick }: Props) {
+function DefaultButton({ label, startIcon, onClick }: Props) {
   const classes = useStyles();
   return (
     <Button
       className={classes.button}
-      variant={variant}
+      variant="contained"
       startIcon={startIcon}
       onClick={() => onClick()}
     >

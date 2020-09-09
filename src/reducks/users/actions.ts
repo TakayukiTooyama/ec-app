@@ -1,9 +1,15 @@
-import { User, Cart } from './types';
+import { User, Cart, FlexibleOrderProduct } from './types';
 
 export const fetchProductInCartAction = (carts: Cart[]) => {
   return {
     type: 'FETCH_PRODUCT_IN_CART',
     payload: carts,
+  };
+};
+export const fetchOrdersHistoryAction = (orders: FlexibleOrderProduct[]) => {
+  return {
+    type: 'FETCH_ORDERS_HISTORY',
+    payload: orders,
   };
 };
 

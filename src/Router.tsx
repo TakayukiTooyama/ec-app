@@ -10,6 +10,8 @@ import {
   ProductDetail,
   ProductList,
   CartList,
+  OrderConfirm,
+  OrderHistory,
 } from './templates';
 
 const Router = () => {
@@ -25,6 +27,8 @@ const Router = () => {
         {/* 新規追加と編集機能を区別するため */}
         <Route path={'/product/edit(/:id)?'} component={ProductEdit} />
         <Route exact path={'/cart'} component={CartList} />
+        <Route exact path={'/order/confirm'} component={OrderConfirm} />
+        <Route exact path={'/order/history'} component={OrderHistory} />
       </Auth>
     </Switch>
   );

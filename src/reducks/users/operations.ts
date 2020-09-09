@@ -1,7 +1,13 @@
 import { auth, FirebaseTimestamp, db, fb } from '../../firebase';
 import { push } from 'connected-react-router';
-import { signInAction, signOutAction, fetchProductInCartAction } from './actions';
-import { Cart, User, MyThunkDispatch, MyTunkResult } from './types';
+import {
+  signInAction,
+  signOutAction,
+  fetchProductInCartAction,
+  fetchOrdersHistoryAction,
+} from './actions';
+import { Cart, User, MyThunkDispatch, MyTunkResult, FlexibleOrderProduct } from './types';
+import { MyTunkUsersResult } from '../products/types';
 
 export const addProductToCart = (addProduct: Cart): MyTunkResult<Promise<void>> => {
   return async (dispatch, getState) => {
@@ -17,6 +23,25 @@ export const addProductToCart = (addProduct: Cart): MyTunkResult<Promise<void>> 
 export const fetchProductInCart = (productInCart: Cart[]) => {
   return async (dispatch: MyThunkDispatch) => {
     dispatch(fetchProductInCartAction(productInCart));
+  };
+};
+
+export const fetchOrdersHistory = (): MyTunkUsersResult<Promise<void>> => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const ordersRef = db.collection('users').doc(uid).collection('orders');
+    const list: FlexibleOrderProduct[] = [];
+
+    ordersRef
+      .orderBy('updated_at', 'desc')
+      .get()
+      .then((snapshots) => {
+        snapshots.forEach((snapshot) => {
+          const data = snapshot.data();
+          list.push(data);
+          dispatch(fetchOrdersHistoryAction(list));
+        });
+      });
   };
 };
 
@@ -40,6 +65,7 @@ export const listenAuth = () => {
                 role: data.role,
                 isSignedIn: true,
                 cart: data.cart,
+                orders: data.orders,
               })
             );
           });
@@ -123,6 +149,7 @@ export const signIn = (email: string, password: string) => {
                 role: data.role,
                 isSignedIn: true,
                 cart: data.cart,
+                orders: data.orders,
               })
             );
             dispatch(push('/'));

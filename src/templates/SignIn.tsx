@@ -47,17 +47,9 @@ function SignIn() {
       />
       <div className="module-spacer--medium"></div>
       <div className="center">
-        <Button
-          label="ログイン"
-          variant="contained"
-          onClick={() => dispatch(signIn(email, password))}
-        />
+        <Button label="ログイン" onClick={() => dispatch(signIn(email, password))} />
         <div className="module-spacer--extra-extra-small"></div>
-        <Button
-          label="Googleログイン"
-          variant="contained"
-          onClick={(e: any) => dispatch(googleAuth())}
-        />
+        <Button label="Googleログイン" onClick={(e: any) => dispatch(googleAuth())} />
         <div className="module-spacer--extra-extra-small"></div>
         <p onClick={() => dispatch(push('/signin/reset'))}>パスワードを忘れた方はこちら</p>
         <p onClick={() => dispatch(push('/signup'))}>アカウント登録がまだですか？</p>

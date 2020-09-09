@@ -1,6 +1,7 @@
 import { Image } from '../products/types';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
+import { firestore } from 'firebase';
 
 export type Users = {
   users: User;
@@ -12,6 +13,7 @@ export type User = {
   role: string;
   isSignedIn: boolean;
   cart: Cart[];
+  orders: Order[];
 };
 
 export type Cart = {
@@ -27,10 +29,32 @@ export type Cart = {
   size: string;
 };
 
+export type FlexibleOrderProduct = {
+  [prop: string]: OrderProduct;
+};
+
+type OrderProduct = {
+  id: string;
+  images: Image[];
+  name: string;
+  price: number;
+  size: string;
+};
+
+export type Order = {
+  id: string;
+  amount: number;
+  created_at: firestore.Timestamp;
+  products: FlexibleOrderProduct;
+  shipping_at: firestore.Timestamp;
+  updated_at: firestore.Timestamp;
+};
+
 //====================
 // Redux Action Type
 //====================
 export const FETCH_PRODUCT_IN_CART = 'FETCH_PRODUCT_IN_CART';
+export const FETCH_ORDERS_HISTORY = 'FETCH_ORDERS_HISTORY';
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_OUT = 'SIGN_OUT';
@@ -38,6 +62,10 @@ export const SIGN_OUT = 'SIGN_OUT';
 interface FetchProductInCartAction {
   type: typeof FETCH_PRODUCT_IN_CART;
   payload: Cart[];
+}
+interface FetchOrdersHistoryAction {
+  type: typeof FETCH_ORDERS_HISTORY;
+  payload: FlexibleOrderProduct[];
 }
 interface SignInAction {
   type: typeof SIGN_IN;
@@ -52,7 +80,12 @@ interface SignOutAction {
   payload: User;
 }
 
-export type UserActionType = FetchProductInCartAction | SignInAction | SignUpAction | SignOutAction;
+export type UserActionType =
+  | FetchProductInCartAction
+  | FetchOrdersHistoryAction
+  | SignInAction
+  | SignUpAction
+  | SignOutAction;
 
 //=================
 // operations type

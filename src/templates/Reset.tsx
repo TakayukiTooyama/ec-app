@@ -33,7 +33,6 @@ function Reset() {
       <div className="center">
         <Button
           label="パスワードをリセットする"
-          variant="contained"
           onClick={() => dispatch(resetPassword(resetEmail))}
         />
         <div className="module-spacer--extra-extra-small"></div>

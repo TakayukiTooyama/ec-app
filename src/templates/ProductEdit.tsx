@@ -120,7 +120,6 @@ function ProductEdit() {
       <div className="center">
         <Button
           label="登録する"
-          variant="contained"
           onClick={() =>
             dispatch(saveProduct(id, name, description, category, gender, price, images, sizes))
           }
