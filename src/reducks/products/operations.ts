@@ -14,19 +14,19 @@ import { Cart, FlexibleOrderProduct, Order } from '../users/types';
 
 const productsRef = db.collection('products');
 
-export const fetchProduct = () => {
+export const fetchProduct = (gender: string, category: string) => {
   return async (dispatch: MyThunkDispatch) => {
-    productsRef
-      .orderBy('created_at', 'desc')
-      .get()
-      .then((snapshots) => {
-        const productList: ProductData[] = [];
-        snapshots.forEach((snapshot) => {
-          const data = snapshot.data() as ProductData;
-          productList.push(data);
-        });
-        dispatch(fetchProductAction(productList));
+    let query = productsRef.orderBy('created_at', 'desc');
+    query = gender !== '' ? query.where('gender', '==', gender) : query;
+    query = category !== '' ? query.where('category', '==', category) : query;
+    query.get().then((snapshots) => {
+      const productList: ProductData[] = [];
+      snapshots.forEach((snapshot) => {
+        const data = snapshot.data() as ProductData;
+        productList.push(data);
       });
+      dispatch(fetchProductAction(productList));
+    });
   };
 };
 

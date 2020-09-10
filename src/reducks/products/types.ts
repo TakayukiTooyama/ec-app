@@ -52,6 +52,11 @@ export type Size = {
   quantity: number;
 };
 
+export type Category = {
+  id: string;
+  name: string;
+  order?: string;
+};
 //====================
 // Redux Action Type
 //====================

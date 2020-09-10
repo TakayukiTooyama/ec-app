@@ -5,7 +5,7 @@ import { db } from '../firebase';
 import { TextInput, Button, SelectBox } from '../components/UIkit';
 import { saveProduct } from '../reducks/products/operations';
 import { ImageArea, SizeArea } from '../components/Products';
-import { Size, Image, Product } from '../reducks/products/types';
+import { Size, Image, Product, Category } from '../reducks/products/types';
 
 function ProductEdit() {
   const dispatch = useDispatch();
@@ -19,6 +19,7 @@ function ProductEdit() {
   const [name, setName] = useState(''),
     [description, setDescription] = useState(''),
     [category, setCategory] = useState(''),
+    [categories, setCategories] = useState<Category[]>([]),
     [gender, setGender] = useState(''),
     [price, setPrice] = useState(0),
     [images, setImages] = useState<Image[]>([]),
@@ -43,12 +44,24 @@ function ProductEdit() {
     [setPrice]
   );
 
-  const categories = [
-    { id: 'tops', name: 'トップス' },
-    { id: 'shirts', name: 'シャツ' },
-    { id: 'pants', name: 'パンツ' },
-    { id: 'socks', name: '靴下' },
-  ];
+  useEffect(() => {
+    const categoriesRef = db.collection('categories');
+    categoriesRef
+      .orderBy('order', 'asc')
+      .get()
+      .then((snapshots) => {
+        const list: Category[] = [];
+        snapshots.forEach((snapshot) => {
+          const data = snapshot.data() as Category;
+          list.push({
+            id: data.id,
+            name: data.name,
+          });
+        });
+        setCategories(list);
+      });
+  }, []);
+
   const genders = [
     { id: 'all', name: 'すべて' },
     { id: 'male', name: 'メンズ' },

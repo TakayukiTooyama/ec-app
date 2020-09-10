@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Drawer,
@@ -18,6 +18,8 @@ import { TextInput } from '../UIkit';
 import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../../reducks/users/operations';
+import { db } from '../../firebase';
+import { Category } from '../../reducks/products/types';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -47,6 +49,12 @@ type Menu = {
   id: string;
   value: string;
 };
+type Filter = {
+  func: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, path: string) => void;
+  label: string;
+  id: string;
+  value: string;
+};
 
 function ClosedDrawer({ open, onClose }: Props) {
   const classes = useStyles();
@@ -64,6 +72,12 @@ function ClosedDrawer({ open, onClose }: Props) {
     dispatch(push(path));
     onClose(e);
   };
+
+  const [filters, setFilters] = useState<Filter[]>([
+    { func: selectMenu, label: '全て', id: 'all', value: '/' },
+    { func: selectMenu, label: 'メンズ', id: 'male', value: '/?gender=male' },
+    { func: selectMenu, label: 'レディース', id: 'female', value: '/?gender=female' },
+  ]);
 
   const menus: Menu[] = [
     {
@@ -88,6 +102,27 @@ function ClosedDrawer({ open, onClose }: Props) {
       value: '/user/mypage',
     },
   ];
+
+  useEffect(() => {
+    const categoriesRef = db.collection('categories');
+    categoriesRef
+      .orderBy('order', 'asc')
+      .get()
+      .then((snapshots) => {
+        const list: Filter[] = [];
+        snapshots.forEach((snapshot) => {
+          const data = snapshot.data() as Category;
+          list.push({
+            func: selectMenu,
+            label: data.name,
+            id: data.id,
+            value: `/?category=${data.id}`,
+          });
+        });
+        setFilters((prev) => [...prev, ...list]);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={classes.drawer}>
@@ -129,7 +164,14 @@ function ClosedDrawer({ open, onClose }: Props) {
               </ListItemIcon>
               <ListItemText primary="ログアウト" />
             </ListItem>
-            <Divider />
+          </List>
+          <Divider />
+          <List>
+            {filters.map((filter) => (
+              <ListItem button key={filter.id} onClick={(e) => filter.func(e, filter.value)}>
+                <ListItemText primary={filter.label} />
+              </ListItem>
+            ))}
           </List>
         </div>
       </Drawer>

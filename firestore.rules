@@ -19,6 +19,10 @@ service cloud.firestore {
       allow read, write: if isAnyAuth();
     }
 
+    match /categories/{categoryId} {
+      allow read, write: if isAnyAuth();
+    }
+
 
     function isAnyAuth() {
       return request.auth.uid != null;
