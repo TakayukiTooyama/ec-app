@@ -19,11 +19,11 @@ import NoImage from '../../assets/img/no_image.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       margin: 8,
       width: 'calc(50% - 16px)',
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       margin: 16,
       width: 'calc(33.3333% - 32px)',
     },
@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 0,
     paddingTop: '100%',
+  },
+  text: {
+    width: '100%',
   },
   price: {
     color: theme.palette.secondary.dark,
@@ -80,7 +83,7 @@ function ProductCard({ id, images, name, price }: Props) {
         onClick={() => dispatch(push(`/product/${id}`))}
       />
       <CardContent className={classes.content}>
-        <div>
+        <div className={classes.text}>
           <Typography component="p">{name}</Typography>
           <Typography className={classes.price} color="textSecondary" component="p">
             ￥{price.toLocaleString()}

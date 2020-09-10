@@ -64,7 +64,7 @@ function HeaderMenu({ handleDrawerToggle }: Props) {
           <ShoppingCartIcon />
         </Badge>
       </IconButton>
-      <IconButton>
+      <IconButton onClick={() => dispatch(push('/user/faborite'))}>
         <FavoriteBorderIcon />
       </IconButton>
       <IconButton onClick={(e) => handleDrawerToggle(e)}>

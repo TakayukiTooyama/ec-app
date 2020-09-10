@@ -22,6 +22,7 @@ const useStyles = makeStyles({
     float: 'right',
   },
   iconCell: {
+    padding: 0,
     height: 48,
     width: 48,
   },
@@ -116,7 +117,7 @@ function SizeArea({ sizes, setSizes }: Props) {
               ))}
           </TableBody>
         </Table>
-        <div>
+        <div className="p-grid__row">
           <TextInput
             label="サイズ"
             fullWidth={true}

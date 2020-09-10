@@ -14,16 +14,17 @@ type Props = {
     id: string;
     name: string;
   }[];
+  margin?: 'dense' | 'none' | 'normal';
   label: string;
   required: boolean;
   value: string;
   select: any;
 };
 
-function SelectBox({ options, label, required, value, select }: Props) {
+function SelectBox({ options, margin, label, required, value, select }: Props) {
   const classes = useStyles();
   return (
-    <FormControl className={classes.formControl}>
+    <FormControl className={classes.formControl} margin={margin}>
       <InputLabel>{label}</InputLabel>
       <Select required={required} value={value} onChange={(e) => select(e.target.value)}>
         {options.map((option) => (

@@ -6,13 +6,16 @@ import {
   SignUp,
   SignIn,
   Reset,
-  ProductEdit,
-  ProductDetail,
-  ProductList,
   CartList,
+  CheckoutWrapper,
+  ProductEdit,
   OrderConfirm,
   OrderHistory,
+  ProductDetail,
+  ProductList,
   UserMypage,
+  OrderCompleted,
+  FaboriteProduct,
 } from './templates';
 
 const Router = () => {
@@ -31,10 +34,12 @@ const Router = () => {
         <Route exact path={'/cart'} component={CartList} />
 
         <Route exact path={'/user/mypage'} component={UserMypage} />
-        <Route exact path={'/user/payment/edit'} component={UserMypage} />
+        <Route exact path={'/user/payment/edit'} component={CheckoutWrapper} />
+        <Route exact path={'/user/favorite'} component={FaboriteProduct} />
 
         <Route exact path={'/order/confirm'} component={OrderConfirm} />
         <Route exact path={'/order/history'} component={OrderHistory} />
+        <Route exact path={'/order/complete'} component={OrderCompleted} />
       </Auth>
     </Switch>
   );

@@ -13,6 +13,9 @@ service cloud.firestore {
       match /orders/{orderId} {
         allow read, write: if isUserAuth(userId);
       }
+      match /favorites/{favoriteId} {
+        allow read, write: if isUserAuth(userId);
+      }
     }
 
     match /products/{productId} {

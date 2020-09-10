@@ -8,6 +8,7 @@ import { Image } from '../../reducks/products/types';
 
 const useStyles = makeStyles({
   icon: {
+    marginRight: 8,
     height: 48,
     width: 48,
   },
