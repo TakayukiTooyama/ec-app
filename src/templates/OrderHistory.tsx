@@ -5,13 +5,12 @@ import { List } from '@material-ui/core';
 import { OrderHistoryItem } from '../components/Products';
 import { fetchOrdersHistory } from '../reducks/users/operations';
 import { getOrderHistory } from '../reducks/users/selectors';
-import { Users } from '../reducks/users/types';
+import { RootState } from '../reducks/store/store';
 
 const OrderHistory = () => {
   const dispatch = useDispatch();
-  const selector = useSelector((state: Users) => state);
+  const selector = useSelector((state: RootState) => state);
   const orders = getOrderHistory(selector);
-  console.log(orders);
 
   useEffect(() => {
     dispatch(fetchOrdersHistory());

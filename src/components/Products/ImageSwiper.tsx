@@ -4,20 +4,12 @@ import 'swiper/css/swiper.css';
 
 import NoImage from '../../assets/img/no_image.png';
 import { Image } from '../../reducks/products/types';
-import { makeStyles } from '@material-ui/core';
 
 type Props = {
   images: Image[];
 };
 
-const useStyles = makeStyles({
-  image: {
-    height: '600px',
-  },
-});
-
 function ImageSwiper({ images }: Props) {
-  const classes = useStyles();
   const [params] = useState({
     pagination: {
       el: '.swiper-pagination',
@@ -35,7 +27,7 @@ function ImageSwiper({ images }: Props) {
     <Swiper {...params}>
       {images.length === 0 ? (
         <div className="p-media__thumb">
-          <img className={classes.image} src={NoImage} alt="NoImage" />
+          <img src={NoImage} alt="NoImage" />
         </div>
       ) : (
         images.map((image) => (

@@ -9,7 +9,7 @@ import { Products, Product, ConnectRouter } from '../reducks/products/types';
 function ProudctList() {
   const dispatch = useDispatch();
   const selector = useSelector((state: Products & ConnectRouter) => state);
-  const products = getProductsList(selector);
+  const products = getProductsList(selector.products);
   const query = selector.router.location.search;
   const gender = /^\?gender=/.test(query) ? query.split('?gender=')[1] : '';
   const category = /^\?category=/.test(query) ? query.split('?category=')[1] : '';

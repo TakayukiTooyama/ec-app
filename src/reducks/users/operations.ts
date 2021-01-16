@@ -5,17 +5,40 @@ import {
   signOutAction,
   fetchProductInCartAction,
   fetchOrdersHistoryAction,
+  fetchProductInFavoriteAction,
+  removeProductFavoriteAction,
 } from './actions';
-import { Cart, User, MyThunkDispatch, MyTunkResult, FlexibleOrderProduct } from './types';
-import { MyTunkUsersResult } from '../products/types';
+import { Cart, User, MyThunkDispatch, MyTunkResult, FlexibleOrderProduct, Favorite } from './types';
+import { MyTunkUsersResult, Product, Size } from '../products/types';
 
-export const addProductToCart = (addProduct: Cart): MyTunkResult<Promise<void>> => {
+export const addProductToCart = (addProduct: Cart & Favorite): MyTunkResult<void> => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
     const cartRef = db.collection('users').doc(uid).collection('cart').doc();
     addProduct['cartId'] = cartRef.id;
     cartRef.set(addProduct).then(() => {
-      dispatch(push('/'));
+      dispatch(push('/cart'));
+    });
+  };
+};
+
+export const addProductToFavorite = (addProduct: Favorite): MyTunkResult<void> => {
+  return async (_dispatch, getState) => {
+    const uid = getState().users.uid;
+    const favoriteRef = db.collection('users').doc(uid).collection('favorites');
+    favoriteRef.doc(addProduct.sizeId).set(addProduct);
+  };
+};
+
+export const removeProductFromFavorite = (
+  selectedProduct: Product,
+  newSizes: Size[],
+  newFavorites: Favorite[]
+): MyTunkResult<void> => {
+  return async (dispatch, _getState) => {
+    const productsRef = db.collection('products').doc(selectedProduct.id);
+    productsRef.update({ sizes: newSizes }).then(() => {
+      dispatch(removeProductFavoriteAction(newFavorites));
     });
   };
 };
@@ -26,7 +49,13 @@ export const fetchProductInCart = (productInCart: Cart[]) => {
   };
 };
 
-export const fetchOrdersHistory = (): MyTunkUsersResult<Promise<void>> => {
+export const fetchProductInFavorite = (productInFavorite: Favorite[]) => {
+  return async (dispatch: MyThunkDispatch) => {
+    dispatch(fetchProductInFavoriteAction(productInFavorite));
+  };
+};
+
+export const fetchOrdersHistory = (): MyTunkUsersResult<void> => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
     const ordersRef = db.collection('users').doc(uid).collection('orders');
@@ -66,6 +95,7 @@ export const listenAuth = () => {
                 isSignedIn: true,
                 cart: data.cart,
                 orders: data.orders,
+                favorites: data.favorites,
               })
             );
           });
@@ -129,7 +159,6 @@ export const signIn = (email: string, password: string) => {
       return false;
     }
     return auth.signInWithEmailAndPassword(email, password).then((result) => {
-      // console.log(result);
       const user = result.user;
 
       if (user) {
@@ -150,6 +179,7 @@ export const signIn = (email: string, password: string) => {
                 isSignedIn: true,
                 cart: data.cart,
                 orders: data.orders,
+                favorites: data.favorites,
               })
             );
             dispatch(push('/'));
@@ -181,7 +211,6 @@ export const googleAuth = () => {
   return async (dispatch: any) => {
     const provider = new fb.auth.GoogleAuthProvider();
     return auth.signInWithPopup(provider).then((result) => {
-      console.log(result);
       const user = result.user;
       if (user) {
         const uid = user.uid;

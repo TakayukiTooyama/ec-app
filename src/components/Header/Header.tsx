@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { HeaderMenu } from './index';
 import { getIsSignedIn } from '../../reducks/users/selectors';
-import { Users } from '../../reducks/users/types';
 import { push } from 'connected-react-router';
 import ClosedDrawer from './ClosedDrawer';
+import { RootState } from '../../reducks/store/store';
 
 const useStyles = makeStyles({
   root: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 function Header() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const selector = useSelector((state: Users) => state);
+  const selector = useSelector((state: RootState) => state);
   const isSignedIn = getIsSignedIn(selector);
   const [open, setOpen] = useState(false);
 

@@ -9,5 +9,6 @@ export const initialState = {
     isSignedIn: false,
     cart: [],
     orders: [],
+    favorites: [],
   },
 };

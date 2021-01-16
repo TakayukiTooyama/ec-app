@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 import { FirebaseTimestamp, db } from '../../firebase';
 import { fetchProductAction, deleteProductAction } from './actions';
 import {
-  ProductData,
+  Product,
   Image,
   Size,
   MyThunkDispatch,
@@ -20,9 +20,9 @@ export const fetchProduct = (gender: string, category: string) => {
     query = gender !== '' ? query.where('gender', '==', gender) : query;
     query = category !== '' ? query.where('category', '==', category) : query;
     query.get().then((snapshots) => {
-      const productList: ProductData[] = [];
+      const productList: Product[] = [];
       snapshots.forEach((snapshot) => {
-        const data = snapshot.data() as ProductData;
+        const data = snapshot.data() as Product;
         productList.push(data);
       });
       dispatch(fetchProductAction(productList));
@@ -30,10 +30,7 @@ export const fetchProduct = (gender: string, category: string) => {
   };
 };
 
-export const orderProduct = (
-  productInCart: Cart[],
-  amount: number
-): MyTunkUsersResult<Promise<boolean | undefined>> => {
+export const orderProduct = (productInCart: Cart[], amount: number): MyTunkUsersResult<void> => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
     const usersRef = db.collection('users').doc(uid);
@@ -46,7 +43,7 @@ export const orderProduct = (
 
     for (const product of productInCart) {
       const snapshot = await productsRef.doc(product.productId).get();
-      const data = snapshot.data() as ProductData;
+      const data = snapshot.data() as Product;
       const sizes = data.sizes;
 
       const updatedSizes = sizes.map((size) => {
@@ -58,6 +55,7 @@ export const orderProduct = (
             return size;
           } else {
             return {
+              sizeId: size.sizeId,
               size: size.size,
               quantity: size.quantity - 1,
             };
@@ -68,7 +66,6 @@ export const orderProduct = (
         }
       });
 
-      // products['feiojfiegijejg'] = {}
       products[product.productId] = {
         id: product.productId,
         images: product.images,
@@ -114,14 +111,14 @@ export const orderProduct = (
   };
 };
 
-export const deleteProduct = (id: string): MyTunkProductsResult<Promise<void>> => {
+export const deleteProduct = (id: string): MyTunkProductsResult<void> => {
   return async (dispatch, getState) => {
     productsRef
       .doc(id)
       .delete()
       .then(() => {
-        const prevProducts: ProductData[] = getState().products.list;
-        const nextProducts = prevProducts.filter((product: ProductData) => product.id !== id);
+        const prevProducts: Product[] = getState().products.list;
+        const nextProducts = prevProducts.filter((product: Product) => product.id !== id);
         dispatch(deleteProductAction(nextProducts));
       });
   };
@@ -134,7 +131,8 @@ export const saveProduct = (
   category: string,
   gender: string,
   price: number,
-  iamges: Image[],
+  fbChecked: boolean,
+  images: Image[],
   sizes: Size[]
 ) => {
   return async (dispatch: MyThunkDispatch) => {
@@ -144,15 +142,20 @@ export const saveProduct = (
     }
     const timestamp = FirebaseTimestamp.now();
 
-    const data: ProductData = {
+    const noImages: Image[] = [
+      { id: `${name}-noImage`, path: 'http://placehold.jp/250x250.png?text=NO IMAGE' },
+    ];
+
+    const data: Product = {
       id: id,
       name: name,
       description: description,
       category: category,
       gender: gender,
       price: parseInt(String(price), 10),
-      images: iamges,
+      images: images.length ? images : noImages,
       sizes: sizes,
+      fbChecked: fbChecked,
       updated_at: timestamp,
     };
 

@@ -22,6 +22,7 @@ function ProductEdit() {
     [categories, setCategories] = useState<Category[]>([]),
     [gender, setGender] = useState(''),
     [price, setPrice] = useState(0),
+    [fbChecked, setFbChecked] = useState(false),
     [images, setImages] = useState<Image[]>([]),
     [sizes, setSizes] = useState<Size[]>([]);
 
@@ -80,6 +81,7 @@ function ProductEdit() {
           setGender(data.gender);
           setName(data.name);
           setPrice(data.price);
+          setFbChecked(data.fbChecked);
           setSizes(data.sizes);
           setImages(data.images);
         });
@@ -134,7 +136,9 @@ function ProductEdit() {
         <Button
           label="登録する"
           onClick={() =>
-            dispatch(saveProduct(id, name, description, category, gender, price, images, sizes))
+            dispatch(
+              saveProduct(id, name, description, category, gender, price, fbChecked, images, sizes)
+            )
           }
         />
       </div>

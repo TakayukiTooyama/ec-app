@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   TableContainer,
   Paper,
@@ -35,9 +35,16 @@ type Props = {
 
 function SizeArea({ sizes, setSizes }: Props) {
   const classes = useStyles();
+  const S = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const N = 16;
+  const id = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+    .map((n) => S[n % S.length])
+    .join('');
   const [index, setIndex] = useState(0),
     [size, setSize] = useState(''),
-    [quantity, setQuantity] = useState(0);
+    [quantity, setQuantity] = useState(0),
+    [fbChecked] = useState(false),
+    [sizeId, setSizeId] = useState(id);
 
   const inputSize = useCallback(
     (e) => {
@@ -52,23 +59,35 @@ function SizeArea({ sizes, setSizes }: Props) {
     [setQuantity]
   );
 
-  const addSize = (addIndex: number, size: string, quantity: number) => {
+  const addSize = (
+    addIndex: number,
+    size: string,
+    quantity: number,
+    fbChecked: boolean,
+    sizeId: string
+  ) => {
     if (size === '') {
       return false;
     } else {
       //ここがいまいち理解できていない
-      if (addIndex === size.length) {
-        const newSizes = { size: size, quantity: quantity };
+      if (addIndex === sizes.length) {
+        const newSizes = { size: size, quantity: quantity, fbChecked: fbChecked, sizeId: sizeId };
         setSizes((prev) => [...prev, newSizes]);
         setIndex(addIndex + 1);
         setSize('');
         setQuantity(0);
       } else {
         const newSizes = sizes;
-        newSizes[addIndex] = { size: size, quantity: quantity };
+        newSizes[addIndex] = {
+          size: size,
+          quantity: quantity,
+          fbChecked: fbChecked,
+          sizeId: sizeId,
+        };
         setSizes(newSizes);
         setIndex(newSizes.length);
         setSize('');
+        setSizeId(id);
         setQuantity(0);
       }
     }
@@ -84,6 +103,10 @@ function SizeArea({ sizes, setSizes }: Props) {
     const newSizes = sizes.filter((item, idx) => idx !== delteIndex);
     setSizes(newSizes);
   };
+
+  useEffect(() => {
+    setIndex(sizes.length);
+  }, [sizes.length]);
 
   return (
     <div>
@@ -117,7 +140,7 @@ function SizeArea({ sizes, setSizes }: Props) {
               ))}
           </TableBody>
         </Table>
-        <div className="p-grid__row">
+        <div>
           <TextInput
             label="サイズ"
             fullWidth={true}
@@ -139,7 +162,10 @@ function SizeArea({ sizes, setSizes }: Props) {
             onChange={inputQuantity}
           />
         </div>
-        <IconButton className={classes.checkIcon} onClick={() => addSize(index, size, quantity)}>
+        <IconButton
+          className={classes.checkIcon}
+          onClick={() => addSize(index, size, quantity, fbChecked, sizeId)}
+        >
           <CheckCircleIcon />
         </IconButton>
       </TableContainer>

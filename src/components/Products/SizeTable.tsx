@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 import { Size } from '../../reducks/products/types';
 
@@ -22,11 +23,15 @@ const useStyles = makeStyles({
 });
 
 type Props = {
+  favoriteId?: string;
   sizes: Size[];
-  addProduct: any;
+  fbChecked: boolean;
+  addProduct: (selectSize: string, sizeId: string) => false | undefined;
+  addFavorite: (selectSize: string, sizeId: string, fbChecked: boolean) => false | undefined;
+  removeFavorite: (sizeId: string) => void;
 };
 
-function SizeTable({ sizes, addProduct }: Props) {
+function SizeTable({ sizes, fbChecked, addProduct, addFavorite, removeFavorite }: Props) {
   const classes = useStyles();
   return (
     <TableContainer>
@@ -41,7 +46,11 @@ function SizeTable({ sizes, addProduct }: Props) {
                 <TableCell>残り{size.quantity}点</TableCell>
                 <TableCell className={classes.iconCell}>
                   {Number(size.quantity) > 0 ? (
-                    <IconButton onClick={() => addProduct(size.size)}>
+                    <IconButton
+                      onClick={() => {
+                        addProduct(size.size, size.sizeId);
+                      }}
+                    >
                       <ShoppingCartIcon />
                     </IconButton>
                   ) : (
@@ -49,9 +58,15 @@ function SizeTable({ sizes, addProduct }: Props) {
                   )}
                 </TableCell>
                 <TableCell className={classes.iconCell}>
-                  <IconButton>
-                    <FavoriteBorderIcon />
-                  </IconButton>
+                  {size.fbChecked ? (
+                    <IconButton onClick={() => removeFavorite(size.sizeId)}>
+                      <FavoriteIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton onClick={() => addFavorite(size.size, size.sizeId, fbChecked)}>
+                      <FavoriteBorderIcon />
+                    </IconButton>
+                  )}
                 </TableCell>
               </TableRow>
             ))}

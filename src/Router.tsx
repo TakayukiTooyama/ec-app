@@ -15,7 +15,7 @@ import {
   ProductList,
   UserMypage,
   OrderCompleted,
-  FaboriteProduct,
+  FavoriteProduct,
 } from './templates';
 
 const Router = () => {
@@ -35,7 +35,7 @@ const Router = () => {
 
         <Route exact path={'/user/mypage'} component={UserMypage} />
         <Route exact path={'/user/payment/edit'} component={CheckoutWrapper} />
-        <Route exact path={'/user/favorite'} component={FaboriteProduct} />
+        <Route exact path={'/user/favorite'} component={FavoriteProduct} />
 
         <Route exact path={'/order/confirm'} component={OrderConfirm} />
         <Route exact path={'/order/history'} component={OrderHistory} />

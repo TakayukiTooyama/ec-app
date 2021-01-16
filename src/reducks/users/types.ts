@@ -2,6 +2,7 @@ import { Image } from '../products/types';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { firestore } from 'firebase';
+import { Favorite } from '@material-ui/icons';
 
 export type Users = {
   users: User;
@@ -14,6 +15,7 @@ export type User = {
   isSignedIn: boolean;
   cart: Cart[];
   orders: Order[];
+  favorites: Favorite[];
 };
 
 export type Cart = {
@@ -27,6 +29,12 @@ export type Cart = {
   productId: string;
   quantity: number;
   size: string;
+  sizeId: string;
+};
+
+export type Favorite = Cart & {
+  favoriteId?: string;
+  fbChecked: boolean;
 };
 
 export type FlexibleOrderProduct = {
@@ -53,15 +61,30 @@ export type Order = {
 //====================
 // Redux Action Type
 //====================
+export const ADD_PRODUCT_TO_FAVORITE = 'ADD_PRODUCT_TO_FAVORITE';
+export const REMOVE_PRODUCT_FAVORITE = 'REMOVE_PRODUCT_FAVORITE';
 export const FETCH_PRODUCT_IN_CART = 'FETCH_PRODUCT_IN_CART';
+export const FETCH_PRODUCT_IN_FAVORITE = 'FETCH_PRODUCT_IN_FAVORITE';
 export const FETCH_ORDERS_HISTORY = 'FETCH_ORDERS_HISTORY';
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_OUT = 'SIGN_OUT';
 
+interface AddProudctToFavoriteAction {
+  type: typeof ADD_PRODUCT_TO_FAVORITE;
+  payload: Favorite[];
+}
+interface RemoveProudctFavoriteAction {
+  type: typeof REMOVE_PRODUCT_FAVORITE;
+  payload: Favorite[];
+}
 interface FetchProductInCartAction {
   type: typeof FETCH_PRODUCT_IN_CART;
   payload: Cart[];
+}
+interface FetchProductInFavoriteAction {
+  type: typeof FETCH_PRODUCT_IN_FAVORITE;
+  payload: Favorite[];
 }
 interface FetchOrdersHistoryAction {
   type: typeof FETCH_ORDERS_HISTORY;
@@ -81,7 +104,11 @@ interface SignOutAction {
 }
 
 export type UserActionType =
+  | AddProudctToFavoriteAction
+  | RemoveProudctFavoriteAction
   | FetchProductInCartAction
+  | FetchProductInCartAction
+  | FetchProductInFavoriteAction
   | FetchOrdersHistoryAction
   | SignInAction
   | SignUpAction

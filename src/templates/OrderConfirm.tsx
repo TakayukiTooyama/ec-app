@@ -1,11 +1,11 @@
 import React, { useMemo, useCallback } from 'react';
 import { makeStyles, List, Divider } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { Users } from '../reducks/users/types';
 import { getCart } from '../reducks/users/selectors';
 import { CartListItem } from '../components/Products';
 import { Button, TextDetail } from '../components/UIkit';
 import { orderProduct } from '../reducks/products/operations';
+import { RootState } from '../reducks/store/store';
 
 const useStyles = makeStyles((theme) => ({
   detailBox: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 const OrderConfirm = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const selector = useSelector((state: Users) => state);
+  const selector = useSelector((state: RootState) => state);
   const productInCart = getCart(selector);
 
   const subtotal = useMemo(

@@ -2,7 +2,7 @@ import { RouterState } from 'connected-react-router';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { firestore } from 'firebase';
-import { Users } from '../users/types';
+import { Favorite, Users } from '../users/types';
 
 export type ConnectRouter = {
   router: RouterState;
@@ -10,12 +10,12 @@ export type ConnectRouter = {
 
 export type Products = {
   products: {
-    list: ProductData[];
+    list: Product[];
   };
 };
 
 export type ProductList = {
-  list: ProductData[];
+  list: Product[];
 };
 
 export type Product = {
@@ -25,17 +25,7 @@ export type Product = {
   category: string;
   gender: string;
   price: number;
-  images: Image[];
-  sizes: Size[];
-};
-
-export type ProductData = {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  gender: string;
-  price: number;
+  fbChecked: boolean;
   images: Image[];
   sizes: Size[];
   created_at?: firestore.Timestamp;
@@ -48,7 +38,9 @@ export type Image = {
 };
 
 export type Size = {
+  sizeId: string;
   size: string;
+  fbChecked: boolean;
   quantity: number;
 };
 
@@ -65,12 +57,12 @@ export const FETCH_PRODUCT = 'FETCH_PRODUCT';
 
 interface FetchProductAction {
   type: typeof FETCH_PRODUCT;
-  payload: ProductData[];
+  payload: Product[];
 }
 
 interface DeleteProductAction {
   type: typeof DELETE_PRODUCT;
-  payload: ProductData[];
+  payload: Product[];
 }
 
 export type ProductActionType = FetchProductAction | DeleteProductAction;
@@ -78,7 +70,8 @@ export type ProductActionType = FetchProductAction | DeleteProductAction;
 //=================
 // operations type
 //=================
-type MyExtraArg = undefined;
-export type MyTunkProductsResult<T> = ThunkAction<T, Products, MyExtraArg, Action>;
-export type MyTunkUsersResult<T> = ThunkAction<T, Users, MyExtraArg, Action>;
-export type MyThunkDispatch = ThunkDispatch<Products, MyExtraArg, Action>;
+export type MyTunkProductsResult<T> = ThunkAction<T, Products, undefined, Action>;
+
+export type MyTunkUsersResult<T> = ThunkAction<T, Users & Favorite, undefined, Action>;
+
+export type MyThunkDispatch = ThunkDispatch<Products, undefined, Action>;

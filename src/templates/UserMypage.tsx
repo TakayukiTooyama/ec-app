@@ -2,12 +2,12 @@ import React, { useCallback } from 'react';
 import { TextDetail, Button } from '../components/UIkit';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUsername } from '../reducks/users/selectors';
-import { Users } from '../reducks/users/types';
 import { push } from 'connected-react-router';
+import { RootState } from '../reducks/store/store';
 
 const UserMypage = () => {
   const dispatch = useDispatch();
-  const selector = useSelector((state: Users) => state);
+  const selector = useSelector((state: RootState) => state);
   const username = getUsername(selector);
 
   const transition = useCallback(

@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getIsSignedIn } from './reducks/users/selectors';
-import { Users } from './reducks/users/types';
 import { listenAuth } from './reducks/users/operations';
+import { RootState } from './reducks/store/store';
 
 const Auth = ({ children }: any) => {
   const dispatch = useDispatch();
-  const selector = useSelector((state: Users) => state);
+  const selector = useSelector((state: RootState) => state);
   const isSignedIn = getIsSignedIn(selector);
 
   useEffect(() => {

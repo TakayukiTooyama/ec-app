@@ -1,10 +1,10 @@
 export const firebaseConfig = {
-  apiKey: 'AIzaSyBSO9vJ_1VkSlnp_NEjdtgWifa8H-jwmuA',
-  authDomain: 'ec-hosino-farm.firebaseapp.com',
-  databaseURL: 'https://ec-hosino-farm.firebaseio.com',
-  projectId: 'ec-hosino-farm',
-  storageBucket: 'ec-hosino-farm.appspot.com',
-  messagingSenderId: '334388661623',
-  appId: '1:334388661623:web:908291082f8e59395b6572',
-  measurementId: 'G-CYB8SLJHMC',
+  apiKey: 'AIzaSyD72ySLEn7UY1ymkPrihiCEZmT0QvhJPio',
+  authDomain: 'ec-app-4fb30.firebaseapp.com',
+  databaseURL: 'https://ec-app-4fb30.firebaseio.com',
+  projectId: 'ec-app-4fb30',
+  storageBucket: 'ec-app-4fb30.appspot.com',
+  messagingSenderId: '451513378942',
+  appId: '1:451513378942:web:a37fe7fe8dc4f2db09902f',
+  measurementId: 'G-FDGV707PB1',
 };

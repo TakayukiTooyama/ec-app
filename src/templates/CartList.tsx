@@ -5,8 +5,9 @@ import { push } from 'connected-react-router';
 
 import { Button, GrayButton } from '../components/UIkit';
 import { getCart } from '../reducks/users/selectors';
-import { Users, Cart } from '../reducks/users/types';
+import { Cart } from '../reducks/users/types';
 import { CartListItem } from '../components/Products';
+import { RootState } from '../reducks/store/store';
 
 const useStyles = makeStyles({
   list: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
 const CartList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const selector = useSelector((state: Users) => state);
+  const selector = useSelector((state: RootState) => state);
   const productInCart: Cart[] = getCart(selector);
 
   const goToCart = useCallback(() => {

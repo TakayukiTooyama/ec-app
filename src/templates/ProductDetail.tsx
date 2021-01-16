@@ -2,17 +2,19 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { db, FirebaseTimestamp } from '../firebase';
 import { useSelector, useDispatch } from 'react-redux';
-import { ConnectRouter } from '../reducks/products/types';
 import HTMLReactParser from 'html-react-parser';
 import ImageSwiper from '../components/Products/ImageSwiper';
 import { SizeTable } from '../components/Products';
-import { addProductToCart } from '../reducks/users/operations';
-import { ProductData } from '../reducks/products/types';
+import { addProductToCart, addProductToFavorite } from '../reducks/users/operations';
+import { Product } from '../reducks/products/types';
+import { getFavoriteProducts, getUid } from '../reducks/users/selectors';
+import { removeProductFavoriteAction } from '../reducks/users/actions';
+import { RootState } from '../reducks/store/store';
 
 const useStyles = makeStyles((theme) => ({
   sliderBox: {
     [theme.breakpoints.down('sm')]: {
-      margin: '0 auto 24px',
+      margin: '0 auto 24px auto',
       height: 320,
       width: 320,
     },
@@ -25,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   detail: {
     textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
-      margin: '0 auto 16px',
+      margin: '0 auto 16px auto',
       height: 320,
       width: 320,
     },
@@ -35,13 +37,20 @@ const useStyles = makeStyles((theme) => ({
       width: 400,
     },
   },
+  price: {
+    fontSize: 36,
+  },
 }));
 
 function ProductDetail() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [product, setProduct] = useState<ProductData | null>(null);
-  const selector = useSelector((state: ConnectRouter) => state);
+  const selector = useSelector((state: RootState) => state);
+
+  const uid = getUid(selector);
+  const favorites = getFavoriteProducts(selector);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [fbChecked, setFbChecked] = useState(false);
   const path = selector.router.location.pathname;
   const id = path.split('/product/')[1];
 
@@ -50,7 +59,7 @@ function ProductDetail() {
       .doc(id)
       .get()
       .then((res) => {
-        const data = res.data() as ProductData;
+        const data = res.data() as Product;
         setProduct(data);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,7 +75,7 @@ function ProductDetail() {
   };
 
   const addProduct = useCallback(
-    (selectSize: string) => {
+    (selectSize: string, sizeId: string) => {
       const timestamp = FirebaseTimestamp.now();
       if (product === null) {
         return false;
@@ -80,12 +89,55 @@ function ProductDetail() {
           gender: product.gender,
           name: product.name,
           images: product.images,
+          sizeId: sizeId,
           quantity: 1,
           size: selectSize,
+          fbChecked: false,
         })
       );
     },
     [product, dispatch]
+  );
+
+  const addFavorite = useCallback(
+    (selectSize: string, sizeId: string, fbChecked: boolean) => {
+      const timestamp = FirebaseTimestamp.now();
+      if (product === null) {
+        return false;
+      }
+      setFbChecked(true);
+      dispatch(
+        addProductToFavorite({
+          added_at: timestamp,
+          productId: product.id,
+          price: product.price,
+          description: product.description,
+          gender: product.gender,
+          name: product.name,
+          images: product.images,
+          quantity: 1,
+          size: selectSize,
+          sizeId: sizeId,
+          fbChecked: fbChecked,
+        })
+      );
+    },
+    [product, dispatch]
+  );
+
+  const removeFavorite = useCallback(
+    (sizeId: string) => {
+      const favoritesRef = db.collection('users').doc(uid).collection('favorites');
+      favoritesRef
+        .doc(sizeId)
+        .delete()
+        .then(() => {
+          const newFavorites = favorites.filter((favorite) => favorite.sizeId !== sizeId);
+          setFbChecked(false);
+          dispatch(removeProductFavoriteAction(newFavorites));
+        });
+    },
+    [uid, dispatch, favorites]
   );
 
   return (
@@ -97,10 +149,17 @@ function ProductDetail() {
           </div>
           <div className={classes.detail}>
             <h2 className="u-text__headline">{product.name}</h2>
-            <p>￥{product.price.toLocaleString()}</p>
-            <p>{returnCodeToBr(product.description)}</p>
+            <p className={classes.price}>￥{product.price.toLocaleString()}</p>
             <div className="module-spacer--small"></div>
-            <SizeTable addProduct={addProduct} sizes={product.sizes} />
+            <SizeTable
+              addProduct={addProduct}
+              addFavorite={addFavorite}
+              sizes={product.sizes}
+              fbChecked={fbChecked}
+              removeFavorite={removeFavorite}
+            />
+            <div className="module-spacer--small"></div>
+            <p>{returnCodeToBr(product.description)}</p>
           </div>
         </div>
       )}

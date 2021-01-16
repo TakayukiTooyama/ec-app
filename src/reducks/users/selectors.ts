@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
-import { Users } from './types';
+import { RootState } from '../store/store';
 
-const usersSelector = (state: Users) => state.users;
+const usersSelector = (state: RootState) => state.users;
 
 export const getUid = createSelector([usersSelector], (state) => state.uid);
 
@@ -14,3 +14,5 @@ export const getIsSignedIn = createSelector([usersSelector], (state) => state.is
 export const getCart = createSelector([usersSelector], (state) => state.cart);
 
 export const getOrderHistory = createSelector([usersSelector], (state) => state.orders);
+
+export const getFavoriteProducts = createSelector([usersSelector], (state) => state.favorites);

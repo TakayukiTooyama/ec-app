@@ -3,7 +3,7 @@ export { default as SignUp } from './SignUp';
 export { default as Reset } from './Reset';
 export { default as CartList } from './CartList';
 export { default as CheckoutWrapper } from './CheckoutWrapper';
-export { default as FaboriteProduct } from './FaboriteProduct';
+export { default as FavoriteProduct } from './FavoriteProduct';
 export { default as OrderConfirm } from './OrderConfirm';
 export { default as OrderCompleted } from './OrderCompleted';
 export { default as OrderHistory } from './OrderHistory';

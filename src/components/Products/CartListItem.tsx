@@ -9,10 +9,11 @@ import {
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import { Cart, Users } from '../../reducks/users/types';
+import { Cart } from '../../reducks/users/types';
 import { useSelector } from 'react-redux';
 import { db } from '../../firebase';
 import { getUid } from '../../reducks/users/selectors';
+import { RootState } from '../../reducks/store/store';
 
 const useStyles = makeStyles({
   list: {
@@ -35,13 +36,15 @@ type Props = {
 
 const CartListItem = ({ product }: Props) => {
   const classes = useStyles();
-  const selector = useSelector((state: Users) => state);
+  const selector = useSelector((state: RootState) => state);
   const uid = getUid(selector);
 
   const removeProductInCart = (cartId: string | undefined) => {
     const cartRef = db.collection('users').doc(uid).collection('cart');
     cartRef.doc(cartId).delete();
   };
+
+  console.log(product);
 
   return (
     <>
