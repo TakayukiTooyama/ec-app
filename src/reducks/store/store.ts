@@ -8,7 +8,7 @@ import { History } from 'history';
 import { UsersReducer } from '../users/reducers';
 import { ProductsReducer } from '../products/reducers';
 import { User } from '../users/types';
-import { Product, ProductList, Products } from '../products/types';
+import { ProductList } from '../products/types';
 
 // createStoreの再定義 - historyを引数で受け、connected-react-routerの利用を抽象化
 export default function createStore(history: History) {

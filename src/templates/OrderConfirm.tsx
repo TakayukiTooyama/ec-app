@@ -39,7 +39,7 @@ const OrderConfirm = () => {
     [productInCart]
   );
   const postage = subtotal < 10000 ? 210 : 0;
-  const tax = subtotal * 0.1;
+  const tax = Math.floor(subtotal * 0.1);
   const total = subtotal + postage + tax;
 
   const order = useCallback(() => {

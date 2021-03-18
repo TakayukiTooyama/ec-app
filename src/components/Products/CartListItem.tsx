@@ -44,8 +44,6 @@ const CartListItem = ({ product }: Props) => {
     cartRef.doc(cartId).delete();
   };
 
-  console.log(product);
-
   return (
     <>
       <ListItem className={classes.list}>

@@ -6,7 +6,6 @@ import { getFavoriteProducts } from '../reducks/users/selectors';
 import { fetchProductInFavorite } from '../reducks/users/operations';
 import { FavoriteListItem } from '../components/Products';
 import { RootState } from '../reducks/store/store';
-import { getProductsList } from '../reducks/products/selectors';
 
 const FavoriteProduct = () => {
   const dispatch = useDispatch();

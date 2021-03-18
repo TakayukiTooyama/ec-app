@@ -21,6 +21,10 @@ const useStyles = makeStyles({
     maxWidth: 1024,
     width: '100%',
   },
+  title: {
+    fontSize: '20px',
+    cursor: 'pointer',
+  },
   iconButton: {
     margin: '0 0 0 auto',
   },
@@ -47,7 +51,9 @@ function Header() {
     <div className={classes.root}>
       <AppBar className={classes.menuBar} position="fixed">
         <Toolbar className={classes.toolBar}>
-          <div onClick={() => dispatch(push('/'))}>ECサイト</div>
+          <div onClick={() => dispatch(push('/'))} className={classes.title}>
+            ECサイト
+          </div>
           {isSignedIn && (
             <div className={classes.iconButton}>
               <HeaderMenu handleDrawerToggle={handleDrawerToggle} />
