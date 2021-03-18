@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 
 import { TextInput, Button } from '../components/UIkit';
-import { signIn, googleAuth } from '../reducks/users/operations';
+import { signIn, googleAuth, anonymousAuth } from '../reducks/users/operations';
 
 function SignIn() {
   const dispatch = useDispatch();
@@ -50,6 +50,8 @@ function SignIn() {
         <Button label="ログイン" onClick={() => dispatch(signIn(email, password))} />
         <div className="module-spacer--extra-extra-small"></div>
         <Button label="Googleログイン" onClick={(e: any) => dispatch(googleAuth())} />
+        <div className="module-spacer--extra-extra-small"></div>
+        <Button label="匿名ログイン" onClick={(e: any) => dispatch(anonymousAuth())} />
         <div className="module-spacer--extra-extra-small"></div>
         <p onClick={() => dispatch(push('/signin/reset'))}>パスワードを忘れた方はこちら</p>
         <p onClick={() => dispatch(push('/signup'))}>アカウント登録がまだですか？</p>

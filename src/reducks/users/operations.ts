@@ -238,3 +238,31 @@ export const googleAuth = () => {
     });
   };
 };
+export const anonymousAuth = () => {
+  return async (dispatch: any) => {
+    return auth.signInAnonymously().then((result) => {
+      const user = result.user;
+      if (user) {
+        const uid = user.uid;
+        const timestamp = FirebaseTimestamp.now();
+
+        const anonymousUserData = {
+          username: 'デモ太朗',
+          email: '',
+          uid: uid,
+          role: 'customer',
+          created_at: timestamp,
+          updated_at: timestamp,
+        };
+
+        return db
+          .collection('users')
+          .doc(uid)
+          .set(anonymousUserData)
+          .then(() => {
+            dispatch(push('/'));
+          });
+      }
+    });
+  };
+};
